@@ -12,6 +12,7 @@ class SanicHandlerGenerator(IGenerator):
     __params_type: str
     
     def __init__(self) -> None:
+        super().__init__()
         self.__method = "get"
         self.__params_class = None
     
@@ -52,6 +53,9 @@ class SanicHandlerGenerator(IGenerator):
             
             argument_name = "query" if self.__params_type == "query" else "body"
             function_generator.add_argument(argument_name, self.__params_class)
+        
+        self.add_from_import("sanic.response", ["HTTPResponse"])
+        self.add_from_import("sanic.request", ["Request"])
         
         return function_generator.generate(indent)
     

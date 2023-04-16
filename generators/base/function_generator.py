@@ -19,6 +19,7 @@ class FunctionGenerator(IGenerator):
     __decorators: list[DecoratorGenerator]
     
     def __init__(self) -> None:
+        super().__init__()
         self.__arguments = []
         self.__decorators = []
         self.__return_type = "None"

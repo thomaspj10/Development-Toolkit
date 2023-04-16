@@ -12,6 +12,7 @@ class DecoratorGenerator(IGenerator):
     __arguments: list[DecoratorArgument]
     
     def __init__(self) -> None:
+        super().__init__()
         self.__arguments = []
         
     def set_decorator(self, decorator: str):

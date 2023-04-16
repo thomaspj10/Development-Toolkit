@@ -19,6 +19,7 @@ class ClassGenerator(IGenerator):
     __functions: list[FunctionGenerator]
     
     def __init__(self) -> None:
+        super().__init__()
         self.__decorators = []
         self.__inherited_classes = []
         self.__attributes = []
