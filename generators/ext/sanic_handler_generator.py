@@ -53,6 +53,8 @@ class SanicHandlerGenerator(IGenerator):
             
             argument_name = "query" if self.__params_type == "query" else "body"
             function_generator.add_argument(argument_name, self.__params_class)
+            
+            self.add_from_import("sanic_ext", ["validate"])
         
         self.add_from_import("sanic.response", ["HTTPResponse"])
         self.add_from_import("sanic.request", ["Request"])
