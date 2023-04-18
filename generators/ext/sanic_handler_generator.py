@@ -56,8 +56,8 @@ class SanicHandlerGenerator(IGenerator):
             
             self.add_from_import("sanic_ext", ["validate"])
         
-        self.add_from_import("sanic.response", ["HTTPResponse"])
-        self.add_from_import("sanic.request", ["Request"])
+        self.add_from_import("sanic", ["HTTPResponse"])
+        self.add_from_import("sanic", ["Request"])
         
         return function_generator.generate(indent)
     

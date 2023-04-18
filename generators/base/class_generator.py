@@ -52,7 +52,7 @@ class ClassGenerator(IGenerator):
         if len(self.__inherited_classes) != 0:
             inherited_classes_result = "(" + ", ".join(self.__inherited_classes) + ")"
         
-        result += f"{INDENT}class {self.__name}{inherited_classes_result}:\n"
+        result += f"class {self.__name}{inherited_classes_result}:\n"
         
         # The class attributes
         for attribute in self.__attributes:
