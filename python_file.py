@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 from generators.igenerator import IGenerator
+from typing import Literal
 import global_vars
 
 @contextmanager
@@ -37,6 +38,9 @@ def python_file(file_name: str):
         # Generate the imports
         imports_result = ""
         
+        if len(python_file.get_future_imports()) != 0:
+            imports_result += f"from __future__ import {', '.join(python_file.get_future_imports())}\n\n"
+        
         for imp in imports:
             imports_result += f"import {imp}\n"
         
@@ -56,9 +60,17 @@ def python_file(file_name: str):
 class PythonFile:
     
     __generators: list[IGenerator]
+    __future_imports: list[str]
     
     def __init__(self) -> None:
         self.__generators = []
+        self.__future_imports = []
+    
+    def add_future_import(self, future_import: Literal["annotations"]):
+        self.__future_imports.append(future_import)    
+    
+    def get_future_imports(self) -> list[str]:
+        return self.__future_imports
     
     def add_generator(self, generator: IGenerator):
         self.__generators.append(generator)

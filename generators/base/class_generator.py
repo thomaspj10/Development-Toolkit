@@ -9,6 +9,7 @@ INDENT = " " * 4
 class ClassAttribute:
     name: str
     type: str
+    default_value: str | None
 
 class ClassGenerator(IGenerator):
     
@@ -34,8 +35,8 @@ class ClassGenerator(IGenerator):
     def add_inherited_class(self, class_name: str):
         self.__inherited_classes.append(class_name)
 
-    def add_attribute(self, name: str, type: str):
-        self.__attributes.append(ClassAttribute(name, type))
+    def add_attribute(self, name: str, type: str, default_value: str | None = None):
+        self.__attributes.append(ClassAttribute(name, type, default_value))
 
     def add_function(self, function_generator: FunctionGenerator):
         self.__functions.append(function_generator)
@@ -56,7 +57,10 @@ class ClassGenerator(IGenerator):
         
         # The class attributes
         for attribute in self.__attributes:
-            result += f"{INDENT}{attribute.name}: {attribute.type}\n"
+            default_value_string = ""
+            if attribute.default_value != None:
+                default_value_string = f" = {attribute.default_value}"
+            result += f"{INDENT}{attribute.name}: {attribute.type}{default_value_string}\n"
         
         # The class functions
         if len(self.__functions) > 0:

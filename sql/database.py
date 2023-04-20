@@ -3,6 +3,13 @@ import sqlite3
 from typing import Type, TypeVar
 from abc import ABC
 
+connection: sqlite3.Connection
+
+def set_sqlite_file(sqlite_file: str):
+    global connection
+    connection = sqlite3.connect(sqlite_file)
+    connection.row_factory = sqlite3.Row
+
 class Model(ABC):
     
     __is_new: bool = False
@@ -75,10 +82,10 @@ class Model(ABC):
 
 T = TypeVar("T", bound=Model)
 
-connection = sqlite3.connect("database.db")
-connection.row_factory = sqlite3.Row
-
 def execute(sql: str):
+    """
+    Execute a sql query.
+    """
     print(f"[SQL] {sql}")
     cursor = connection.cursor()
     
@@ -86,6 +93,9 @@ def execute(sql: str):
     connection.commit()
 
 def fetch(sql: str) -> list[sqlite3.Row]:
+    """
+    Fetch data from the database.
+    """
     print(f"[SQL] {sql}")
     cursor = connection.cursor()
     
@@ -94,12 +104,13 @@ def fetch(sql: str) -> list[sqlite3.Row]:
     return cursor.fetchall()
 
 def fetch_as(sql: str, type: Type[T]) -> list[T]:
-    return [create_class_object(row, type) for row in fetch(sql)]
+    """
+    Fetch data from the database and convert it to a class instance.
+    """
+    return [create_class_instance(row, type) for row in fetch(sql)]
 
-# execute("drop table User")
-# execute("create table User (id integer primary key autoincrement, name varchar(255))")
-
-def create_class_object(row: sqlite3.Row, type: Type[T]) -> T:
+# Create a new class instance from a sqlite row.
+def create_class_instance(row: sqlite3.Row, type: Type[T]) -> T:
     obj = type.__new__(type)
     
     for annotation in get_class_annotations(obj):
