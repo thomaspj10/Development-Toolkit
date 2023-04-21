@@ -6,7 +6,7 @@ sql.set_sqlite_file("database.db")
 # sql.execute("drop table User")
 # sql.execute("create table User (id integer primary key autoincrement, name varchar(255))")
 
-# user = User("Bas")
+# user = models.User("Aap")
 # print(user)
 # user.store()
 
