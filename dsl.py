@@ -1,22 +1,16 @@
 from contextlib import contextmanager
 
-@contextmanager
-def func():
-    def enter():
-        yield
-        
-    return enter
-
 class Head:
     pass
 
 class Html:
+    pass
     
-    @contextmanager
-    def head(self):
-        head = Head()
-        yield head
-        print(head)
+@contextmanager
+def head():
+    head = Head()
+    yield head
+    print(head)
 
 @contextmanager
 def html():
@@ -25,7 +19,5 @@ def html():
     print(html)
 
 with html() as body:
-    with body.head() as head:
+    with head() as h:
         print("Hello !")
-    
-    

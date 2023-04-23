@@ -1,6 +1,6 @@
 from __future__ import annotations
 import sqlite3
-from typing import Type, TypeVar
+from typing import Type, TypeVar, Any
 from abc import ABC
 
 connection: sqlite3.Connection
@@ -43,16 +43,9 @@ class Model(ABC):
         values: list[str] = []
         for annotation in get_class_annotations(self):
             value = self.__getattribute__(annotation)
+            sql_value = python_to_sql_value(value)
             
-            if value == None:
-                values.append(f"`{annotation}` = null")
-                continue
-            
-            if isinstance(value, str):
-                values.append(f"`{annotation}` = '{value}'")
-                continue
-            
-            values.append(f"`{annotation}` = {value}")
+            values.append(f"`{annotation}` = {sql_value}")
         
         values_string = ", ".join(values)
         id = self.__getattribute__("id")
@@ -64,16 +57,7 @@ class Model(ABC):
         values: list[str] = []
         for annotation in get_class_annotations(self):
             value = self.__getattribute__(annotation)
-            
-            if value == None:
-                values.append("null")
-                continue
-            
-            if isinstance(value, str):
-                values.append(f"'{value}'")
-                continue
-            
-            values.append(str(value))
+            values.append(python_to_sql_value(value))
                 
         values_string = ", ".join(values)
         
@@ -122,3 +106,17 @@ def create_class_instance(row: sqlite3.Row, type: Type[T]) -> T:
 # Only public fields are valid for usage.
 def get_class_annotations(model: Model):
     return [annotation for annotation in model.__annotations__ if not annotation.startswith("__")]
+
+# Convert a Python value to sql value
+# Examples:
+# None -> null
+# Hello -> 'Hello'
+# 10 -> 10
+def python_to_sql_value(value: Any) -> str:
+    if value == None:
+        return "null"
+    
+    if isinstance(value, str):
+        return f"'{value}'"
+    
+    return str(value)
