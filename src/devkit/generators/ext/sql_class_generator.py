@@ -45,7 +45,7 @@ class SqlClassGenerator(IGenerator):
         class_generator.add_from_import("dataclasses", ["field"])
         
         # Attributes.
-        class_generator.add_attribute("id", "int | None", "field(init=False, default=None)")
+        class_generator.add_attribute("id", "int", "field(init=False, default=None) # type: ignore")
         for column in self.__columns:
             class_generator.add_attribute(column.name, column.type)
         

@@ -6,7 +6,7 @@ from typing import Self
 
 @dataclass(slots=True)
 class User(Model):
-    id: int | None = field(init=False, default=None)
+    id: int = field(init=False, default=None) # type: ignore
     name: str
     address_id: int
 
@@ -29,7 +29,7 @@ class User(Model):
 
 @dataclass(slots=True)
 class Address(Model):
-    id: int | None = field(init=False, default=None)
+    id: int = field(init=False, default=None) # type: ignore
     name: str
 
     @staticmethod

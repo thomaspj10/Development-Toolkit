@@ -12,20 +12,17 @@ def set_sqlite_file(sqlite_file: str):
 
 class Model(ABC):
     
-    __is_new: bool = False
+    # Performance optimization to only make an actual sql query when the data has been modifed.
+    __is_modified: bool
     
     def __post_init__(self):
-        self.__is_new = True
+        self.__create()
+        self.__is_modified = False
     
-    def store(self):
-        """
-        Creates a new row in the database if none exists, the row gets updated if it already exists.
-        """
-        if self.__is_new:
-            self.__create()
-            self.__is_new = False
-        else:
-            self.__update()
+    def __setattr__(self, attribute: str, value: Any):
+        # Be careful: We have to do it this way to prevent a recursive call.
+        super().__setattr__("_Model__is_modified", True)
+        return super().__setattr__(attribute, value)
     
     def delete(self):
         """
@@ -39,7 +36,13 @@ class Model(ABC):
     def _get_table_name(self) -> str:
         return self.__class__.__name__
     
-    def __update(self):
+    def store(self):
+        """
+        Stores the row into the database.
+        """
+        if not self.__is_modified:
+            return
+        
         keys: list[str] = []
         values: list[Any] = []
         for annotation in get_class_annotations(self):
