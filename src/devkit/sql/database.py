@@ -40,51 +40,62 @@ class Model(ABC):
         return self.__class__.__name__
     
     def __update(self):
-        values: list[str] = []
+        keys: list[str] = []
+        values: list[Any] = []
         for annotation in get_class_annotations(self):
-            value = self.__getattribute__(annotation)
-            sql_value = python_to_sql_value(value)
-            
-            values.append(f"`{annotation}` = {sql_value}")
+            keys.append(f"`{annotation}` = ?")
+            values.append(self.__getattribute__(annotation))
         
-        values_string = ", ".join(values)
+        keys_string = ", ".join(keys)
         id = self.__getattribute__("id")
         
-        sql = f"update `{self._get_table_name()}` set {values_string} where `id` = '{id}'"
-        execute(sql)
+        sql = f"update `{self._get_table_name()}` set {keys_string} where `id` = '{id}'"
+        execute(sql, values)
     
     def __create(self):
-        values: list[str] = []
+        keys: list[str] = []
+        values: list[Any] = []
         for annotation in get_class_annotations(self):
-            value = self.__getattribute__(annotation)
-            values.append(python_to_sql_value(value))
+            keys.append("?")
+            values.append(self.__getattribute__(annotation))
                 
-        values_string = ", ".join(values)
+        keys_string = ", ".join(keys)
         
-        sql = f"insert into `{self._get_table_name()}` values ({values_string})"
-        execute(sql)
+        sql = f"insert into `{self._get_table_name()}` values ({keys_string})"
+        id = insert(sql, values)
+        self.__setattr__("id", id)
 
 T = TypeVar("T", bound=Model)
 
-def execute(sql: str):
+def execute(sql: str, parameters: list[str] = []):
     """
     Execute a sql query.
     """
     print(f"[SQL] {sql}")
     cursor = connection.cursor()
     
-    cursor.execute(sql)
+    cursor.execute(sql, parameters)
     connection.commit()
 
-def fetch(sql: str) -> list[sqlite3.Row]:
+def insert(sql: str, parameters: list[str] = []) -> int | None:
+    """
+    Insert a row into the database and return the 
+    """
+    print(f"[SQL] {sql}")
+    cursor = connection.cursor()
+    
+    cursor.execute(sql, parameters)
+    connection.commit()
+    return cursor.lastrowid
+
+def fetch(sql: str, parameters: list[str] = []) -> list[sqlite3.Row]:
     """
     Fetch data from the database.
     """
     print(f"[SQL] {sql}")
     cursor = connection.cursor()
     
-    cursor.execute(sql)
-    
+    cursor.execute(sql, parameters)
     return cursor.fetchall()
 
 def fetch_as(sql: str, type: Type[T]) -> list[T]:
@@ -106,17 +117,3 @@ def create_class_instance(row: sqlite3.Row, type: Type[T]) -> T:
 # Only public fields are valid for usage.
 def get_class_annotations(model: Model):
     return [annotation for annotation in model.__annotations__ if not annotation.startswith("__")]
-
-# Convert a Python value to sql value
-# Examples:
-# None -> null
-# Hello -> 'Hello'
-# 10 -> 10
-def python_to_sql_value(value: Any) -> str:
-    if value == None:
-        return "null"
-    
-    if isinstance(value, str):
-        return f"'{value}'"
-    
-    return str(value)

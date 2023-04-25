@@ -67,6 +67,6 @@ class ClassGenerator(IGenerator):
             result += "\n"
         
         for function in self.__functions:
-            result += function.generate(1)
+            result += function.generate(1) + "\n"
         
         return result

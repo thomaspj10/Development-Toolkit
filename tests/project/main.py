@@ -4,13 +4,18 @@ import models
 sql.set_sqlite_file("database.db")
 
 # sql.execute("drop table User")
-# sql.execute("create table User (id integer primary key autoincrement, name varchar(255))")
+# sql.execute("drop table Address")
+# sql.execute("create table Address (id integer primary key autoincrement, name varchar(255))")
+# sql.execute("create table User (id integer primary key autoincrement, name varchar(255), address_id int, foreign key (address_id) references User(id))")
 
-# user = models.User("Aap")
-# print(user)
+# address = models.Address("Straat")
+# address.store()
+
+# user = models.User("Aap", address.id)
 # user.store()
-
-print(models.User.find_by_id(6))
+# print(user)
 
 for user in models.User.find_all():
+    address = user.get_address()
     print(user)
+    print(address)
