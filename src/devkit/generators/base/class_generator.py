@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from generators.igenerator import IGenerator
-from generators.base.function_generator import FunctionGenerator
-from generators.base.decorator_generator import DecoratorGenerator
+from devkit.generators.igenerator import IGenerator
+from devkit.generators.base.function_generator import FunctionGenerator
+from devkit.generators.base.decorator_generator import DecoratorGenerator
 
 INDENT = " " * 4
 

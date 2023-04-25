@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from sql import fetch_as, Model
+from devkit.sql import Model, fetch_as
 
 @dataclass(slots=True)
 class User(Model):

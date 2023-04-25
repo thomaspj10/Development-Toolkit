@@ -1,4 +1,4 @@
-from generators.igenerator import IGenerator
+from devkit.generators.igenerator import IGenerator
 
 class RawCodeGenerator(IGenerator):
     

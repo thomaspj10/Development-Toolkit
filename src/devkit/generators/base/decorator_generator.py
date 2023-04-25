@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from generators.igenerator import IGenerator
+from devkit.generators.igenerator import IGenerator
 
 @dataclass
 class DecoratorArgument:

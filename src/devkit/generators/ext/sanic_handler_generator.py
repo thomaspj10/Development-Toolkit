@@ -1,6 +1,6 @@
-from generators.igenerator import IGenerator
+from devkit.generators.igenerator import IGenerator
 from typing import Literal
-from generators.base import FunctionGenerator, DecoratorGenerator
+from devkit.generators.base import FunctionGenerator, DecoratorGenerator
 
 class SanicHandlerGenerator(IGenerator):
     

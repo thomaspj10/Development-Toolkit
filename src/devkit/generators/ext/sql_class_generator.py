@@ -1,6 +1,6 @@
-from generators.igenerator import IGenerator
-from generators.base import DecoratorGenerator, ClassGenerator, FunctionGenerator
-from generators.base.class_generator import ClassAttribute
+from devkit.generators.igenerator import IGenerator
+from devkit.generators.base import DecoratorGenerator, ClassGenerator, FunctionGenerator
+from devkit.generators.base.class_generator import ClassAttribute
 
 class SqlClassGenerator(IGenerator):
     
@@ -29,7 +29,7 @@ class SqlClassGenerator(IGenerator):
         class_generator.add_decorator(dataclass_decorator)
         
         class_generator.add_inherited_class("Model")
-        class_generator.add_from_import("sql", ["Model", "fetch_as"])
+        class_generator.add_from_import("devkit.sql", ["Model", "fetch_as"])
         class_generator.add_from_import("dataclasses", ["field"])
         
         class_generator.add_attribute("id", "int | None", "field(init=False, default=None)")

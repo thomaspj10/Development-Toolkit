@@ -1,2 +1,6 @@
 # Development Toolkit
- A development to create prototypes way faster
+Development toolkit to increase velocity and code quality.
+
+## Installation
+1. Go into the base directory.
+2. `pip install -e .`

@@ -1,7 +1,7 @@
 from contextlib import contextmanager
-from generators.igenerator import IGenerator
+from devkit.generators.igenerator import IGenerator
 from typing import Literal
-import global_vars
+import devkit.global_vars as global_vars
 
 class PythonFile:
     
@@ -69,7 +69,7 @@ def generate(python_file: PythonFile) -> str:
 @contextmanager
 def python_file(file_name: str):
     """
-    Create a new Python file using generators.
+    Create a new Python file using devkit.generators.
     """
     
     python_file = PythonFile()

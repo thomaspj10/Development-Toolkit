@@ -1,4 +1,4 @@
-import sql
+import devkit.sql as sql
 import models
 
 sql.set_sqlite_file("database.db")

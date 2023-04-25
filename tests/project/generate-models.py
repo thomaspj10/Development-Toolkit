@@ -1,5 +1,5 @@
-from generators.ext import SqlClassGenerator
-from python_file import python_file
+from devkit.generators.ext import SqlClassGenerator
+from devkit.python_file import python_file
     
 with python_file("models.py") as pf:
     pf.add_future_import("annotations")
