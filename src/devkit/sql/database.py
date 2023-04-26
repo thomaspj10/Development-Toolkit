@@ -6,6 +6,9 @@ from abc import ABC
 connection: sqlite3.Connection
 
 def set_sqlite_file(sqlite_file: str):
+    """
+    Set the location of the sqlite database. This has to be done before any other sql operation.
+    """
     global connection
     connection = sqlite3.connect(sqlite_file)
     connection.row_factory = sqlite3.Row
