@@ -55,7 +55,7 @@ class SqlClassGenerator(IGenerator):
         
         find_by_id_function = FunctionGenerator()
         find_by_id_function.set_name("find_by_id")
-        find_by_id_function.set_body("""result = fetch_as(f"select * from `""" + self.__table + """` where `id` = {id}", """ + self.__table + """)
+        find_by_id_function.set_body("""result = fetch_as(f"select rowid as id, * from `""" + self.__table + """` where `rowid` = {id}", """ + self.__table + """)
 
 if len(result) == 0:
     return None
@@ -67,7 +67,7 @@ return result[0]""")
         
         find_all_function = FunctionGenerator()
         find_all_function.set_name("find_all")
-        find_all_function.set_body("""return fetch_as(f"select * from `""" + self.__table + """`", """ + self.__table + """)""")
+        find_all_function.set_body("""return fetch_as(f"select rowid as id, * from `""" + self.__table + """`", """ + self.__table + """)""")
         find_all_function.set_return_type(f"list[{self.__table}]")
         find_all_function.add_decorator(staticmethod_decorator)
         
@@ -87,7 +87,10 @@ return result[0]""")
             
             foreign_key_function.add_argument("self", "Self")
             foreign_key_function.add_from_import("typing", ["Self"])
-            foreign_key_function.set_body(f"return {foreign_key.table}.find_by_id(self.{foreign_key.column})" + ("" if foreign_key.nullable else " # type: ignore"))
+            foreign_key_function.set_body(f"""if self.{foreign_key.column} == None: 
+    return None
+
+return {foreign_key.table}.find_by_id(self.{foreign_key.column})""" + ("" if foreign_key.nullable else " # type: ignore"))
 
             class_generator.add_function(foreign_key_function)
         

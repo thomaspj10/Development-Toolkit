@@ -33,7 +33,7 @@ class Model(ABC):
         """
         id = self.__getattribute__("id")
         
-        sql = f"delete from `{self._get_table_name()}` where `id` = {id}"
+        sql = f"delete from `{self._get_table_name()}` where `rowid` = {id}"
         execute(sql)
     
     def _get_table_name(self) -> str:
@@ -55,7 +55,7 @@ class Model(ABC):
         keys_string = ", ".join(keys)
         id = self.__getattribute__("id")
         
-        sql = f"update `{self._get_table_name()}` set {keys_string} where `id` = '{id}'"
+        sql = f"update `{self._get_table_name()}` set {keys_string} where `rowid` = '{id}'"
         execute(sql, values)
     
     def __create(self):
@@ -73,7 +73,7 @@ class Model(ABC):
 
 T = TypeVar("T", bound=Model)
 
-def execute(sql: str, parameters: list[str] = []):
+def execute(sql: str, parameters: list[Any] = []):
     """
     Execute a sql query.
     """
@@ -83,7 +83,7 @@ def execute(sql: str, parameters: list[str] = []):
     cursor.execute(sql, parameters)
     connection.commit()
 
-def insert(sql: str, parameters: list[str] = []) -> int | None:
+def insert(sql: str, parameters: list[Any] = []) -> int | None:
     """
     Insert a row into the database and return the 
     """
@@ -94,7 +94,7 @@ def insert(sql: str, parameters: list[str] = []) -> int | None:
     connection.commit()
     return cursor.lastrowid
 
-def fetch(sql: str, parameters: list[str] = []) -> list[sqlite3.Row]:
+def fetch(sql: str, parameters: list[Any] = []) -> list[sqlite3.Row]:
     """
     Fetch data from the database.
     """

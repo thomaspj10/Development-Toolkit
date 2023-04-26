@@ -11,7 +11,7 @@ class Address(Model):
 
     @staticmethod
     def find_by_id(id: int) -> Address | None:
-        result = fetch_as(f"select * from `Address` where `id` = {id}", Address)
+        result = fetch_as(f"select rowid as id, * from `Address` where `rowid` = {id}", Address)
         
         if len(result) == 0:
             return None
@@ -20,18 +20,18 @@ class Address(Model):
 
     @staticmethod
     def find_all() -> list[Address]:
-        return fetch_as(f"select * from `Address`", Address)
+        return fetch_as(f"select rowid as id, * from `Address`", Address)
 
 
 @dataclass(slots=True)
 class User(Model):
     id: int = field(init=False, default=None) # type: ignore
     name: str
-    address_id: int
+    address_id: int | None
 
     @staticmethod
     def find_by_id(id: int) -> User | None:
-        result = fetch_as(f"select * from `User` where `id` = {id}", User)
+        result = fetch_as(f"select rowid as id, * from `User` where `rowid` = {id}", User)
         
         if len(result) == 0:
             return None
@@ -40,9 +40,12 @@ class User(Model):
 
     @staticmethod
     def find_all() -> list[User]:
-        return fetch_as(f"select * from `User`", User)
+        return fetch_as(f"select rowid as id, * from `User`", User)
 
     def get_address(self: Self) -> Address | None:
-        return Address.find_by_id(self.id)
+        if self.address_id == None: 
+            return None
+        
+        return Address.find_by_id(self.address_id)
 
 

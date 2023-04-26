@@ -69,7 +69,7 @@ def generate_models():
                     
                     if foreign_key_match != None:
                         foreign_key_table = foreign_key_match.group(2)
-                        foreign_key_column = foreign_key_match.group(3)
+                        foreign_key_column = foreign_key_match.group(1)
                         foreign_keys.append(SqlForeignKey(foreign_key_table, foreign_key_column, True))
                         
                     continue
