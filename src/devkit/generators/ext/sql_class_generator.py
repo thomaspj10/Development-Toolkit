@@ -87,10 +87,18 @@ return result[0]""")
             
             foreign_key_function.add_argument("self", "Self")
             foreign_key_function.add_from_import("typing", ["Self"])
-            foreign_key_function.set_body(f"""if self.{foreign_key.column} == None: 
+            
+            body = ""
+            
+            if foreign_key.nullable:
+                body += f"""if self.{foreign_key.column} == None: 
     return None
 
-return {foreign_key.table}.find_by_id(self.{foreign_key.column})""" + ("" if foreign_key.nullable else " # type: ignore"))
+"""
+
+            body += f"return {foreign_key.table}.find_by_id(self.{foreign_key.column})" + ("" if foreign_key.nullable else " # type: ignore")
+            
+            foreign_key_function.set_body(body)
 
             class_generator.add_function(foreign_key_function)
         
