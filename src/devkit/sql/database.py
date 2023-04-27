@@ -4,6 +4,7 @@ from typing import Type, TypeVar, Any
 from abc import ABC
 
 connection: sqlite3.Connection
+debug = False
 
 def set_sqlite_file(sqlite_file: str):
     """
@@ -12,6 +13,20 @@ def set_sqlite_file(sqlite_file: str):
     global connection
     connection = sqlite3.connect(sqlite_file)
     connection.row_factory = sqlite3.Row
+
+def close_connection():
+    """
+    Close the connection to the sqlite database if any exists.
+    """
+    if connection != None: # type: ignore
+        connection.close()
+
+def set_debug(is_debug: bool):
+    """
+    Enable or disable debug mode which logs all sql queries to the console.
+    """
+    global debug
+    debug = is_debug
 
 class Model(ABC):
     
@@ -77,7 +92,7 @@ def execute(sql: str, parameters: list[Any] = []):
     """
     Execute a sql query.
     """
-    print(f"[SQL] {sql}")
+    if debug: print(f"[SQL] {sql}", parameters)
     cursor = connection.cursor()
     
     cursor.execute(sql, parameters)
@@ -87,7 +102,7 @@ def insert(sql: str, parameters: list[Any] = []) -> int | None:
     """
     Insert a row into the database and return the 
     """
-    print(f"[SQL] {sql}")
+    if debug: print(f"[SQL] {sql}", parameters)
     cursor = connection.cursor()
     
     cursor.execute(sql, parameters)
@@ -98,7 +113,7 @@ def fetch(sql: str, parameters: list[Any] = []) -> list[sqlite3.Row]:
     """
     Fetch data from the database.
     """
-    print(f"[SQL] {sql}")
+    if debug: print(f"[SQL] {sql}", parameters)
     cursor = connection.cursor()
     
     cursor.execute(sql, parameters)

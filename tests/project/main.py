@@ -2,6 +2,7 @@ import devkit.sql as sql
 import models
 
 sql.set_sqlite_file("database.db")
+sql.set_debug(True)
 
 sql.execute("drop table User")
 sql.execute("drop table Address")
