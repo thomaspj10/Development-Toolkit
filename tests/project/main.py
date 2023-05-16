@@ -4,8 +4,8 @@ import models
 sql.set_sqlite_file("database.db")
 sql.set_debug(True)
 
-sql.execute("drop table User")
-sql.execute("drop table Address")
+sql.execute("drop table if exists User")
+sql.execute("drop table if exists Address")
 sql.execute("create table Address (id integer primary key autoincrement, name varchar(255))")
 sql.execute("create table User (id integer primary key autoincrement, name varchar(255) not null, address_id int, foreign key (address_id) references Address(id))")
 # sql.execute("insert into User values (?, ?, ?)", [None, "Thomas", None])
