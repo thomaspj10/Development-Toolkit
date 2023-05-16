@@ -2,4 +2,5 @@
 .vscode
 
 /tests/project/models.py
-/src/devkit/devkit.egg-info
+/tests/project/database.db
+/src/devkit.egg-info
