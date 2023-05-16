@@ -15,7 +15,7 @@ def __log(level: Literal["debug"] | Literal["info"] | Literal["warn"] | Literal[
     if level == "warn": color = __WARNING
     if level == "error": color = __ERROR
 
-    print(f"{color}[{level}]{__ENDC} {message}")
+    print(f"{color}[{level.upper()}]{__ENDC} {message}")
 
 @overload
 def debug(message: str) -> None: ...
