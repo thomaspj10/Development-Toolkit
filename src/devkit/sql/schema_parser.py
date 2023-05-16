@@ -1,7 +1,7 @@
 import re
 from dataclasses import dataclass
 from devkit.generators.ext import SqlClassGenerator
-from devkit.python_file import python_file
+from devkit.generators.python_file import python_file
 import devkit.sql as sql
 
 @dataclass

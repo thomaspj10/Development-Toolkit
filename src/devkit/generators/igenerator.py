@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import devkit.global_vars as global_vars
+import devkit.generators.global_vars as global_vars
 
 class IGenerator(ABC):
     

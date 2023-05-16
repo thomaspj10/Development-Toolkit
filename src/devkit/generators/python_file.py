@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 from devkit.generators.igenerator import IGenerator
 from typing import Literal
-import devkit.global_vars as global_vars
+import devkit.generators.global_vars as global_vars
 
 class PythonFile:
     
