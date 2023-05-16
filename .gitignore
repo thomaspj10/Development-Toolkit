@@ -1,2 +1,5 @@
 **/__pycache__/
 .vscode
+
+/tests/project/models.py
+/src/devkit/devkit.egg-info
