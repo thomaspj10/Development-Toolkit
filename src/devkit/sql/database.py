@@ -100,7 +100,7 @@ def execute(sql: str, parameters: list[Any] = []):
 
 def insert(sql: str, parameters: list[Any] = []) -> int | None:
     """
-    Insert a row into the database and return the 
+    Insert a row into the database and return the row id
     """
     if debug: print(f"[SQL] {sql}", parameters)
     cursor = connection.cursor()
@@ -119,11 +119,11 @@ def fetch(sql: str, parameters: list[Any] = []) -> list[sqlite3.Row]:
     cursor.execute(sql, parameters)
     return cursor.fetchall()
 
-def fetch_as(sql: str, type: Type[T]) -> list[T]:
+def fetch_as(sql: str, type: Type[T], parameters: list[Any] = []) -> list[T]:
     """
     Fetch data from the database and convert it to a class instance.
     """
-    return [create_class_instance(row, type) for row in fetch(sql)]
+    return [create_class_instance(row, type) for row in fetch(sql, parameters)]
 
 # Create a new class instance from a sqlite row.
 def create_class_instance(row: sqlite3.Row, type: Type[T]) -> T:
