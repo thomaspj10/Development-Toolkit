@@ -32,17 +32,16 @@ class QueryBuilder:
         condition_string = " and ".join([item.condition for item in self.__conditions])
         if len(condition_string) > 0: condition_string = " where " + condition_string
 
-        return f"select * from `{self.__table_name}`{condition_string}"
+        return f"select rowid as id, * from `{self.__table_name}`{condition_string}"
     
     def get_table_type(self) -> Type[Any]:
         return self.__table_type
 
-T = TypeVar("T", bound=sql.Model)
-U = TypeVar("U", bound="TableDefinition[Any, Any]")
-V = TypeVar("V")
-W = TypeVar("W")
+ModelType = TypeVar("ModelType", bound=sql.Model)
+TableDefinitionType = TypeVar("TableDefinitionType", bound="TableDefinition[Any, Any]")
+ParameterType = TypeVar("ParameterType")
 
-class Condition(Generic[U, W]):
+class Condition(Generic[TableDefinitionType, ParameterType]):
 
     condition: str
     parameters: list[Any]
@@ -52,7 +51,7 @@ class Condition(Generic[U, W]):
         self.condition = condition
         self.parameters = parameters
 
-class ColumnDefinition(Generic[U, W]):
+class ColumnDefinition(Generic[TableDefinitionType, ParameterType]):
     
     column_name: str
 
@@ -60,15 +59,27 @@ class ColumnDefinition(Generic[U, W]):
         super().__init__()
         self.column_name = column_name
 
-    def eq(self, other: W) -> Condition[U, W]:
+    def eq(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
         return Condition(f"(`{self.column_name}` = ?)", [other])
+    
+    def lt(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
+        return Condition(f"(`{self.column_name}` < ?)", [other])
 
-class TableDefinition(Generic[T, U]):
+    def le(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
+        return Condition(f"(`{self.column_name}` <= ?)", [other])
+    
+    def gt(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
+        return Condition(f"(`{self.column_name}` > ?)", [other])
+    
+    def ge(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
+        return Condition(f"(`{self.column_name}` >= ?)", [other])
+
+class TableDefinition(Generic[ModelType, TableDefinitionType]):
     
     table_name: str
-    table_type: Type[T]
+    table_type: Type[ModelType]
 
-    def __init__(self, table_name: str, table_type: Type[T]) -> None:
+    def __init__(self, table_name: str, table_type: Type[ModelType]) -> None:
         super().__init__()
         self.table_name = table_name
         self.table_type = table_type
@@ -79,7 +90,13 @@ class UserTable(TableDefinition[models.User, "UserTable"]):
 
 USER = UserTable("User", models.User)
 
-class SelectFromStep(Generic[T, U]):
+class AddressTable(TableDefinition[models.Address, "AddressTable"]):
+    ID: ColumnDefinition[AddressTable, int] = ColumnDefinition("id")
+    NAME: ColumnDefinition[AddressTable, str] = ColumnDefinition("name")
+
+ADDRESS = AddressTable("Address", models.Address)
+
+class SelectFromStep(Generic[ModelType, TableDefinitionType]):
     
     __query_builder: QueryBuilder
 
@@ -87,14 +104,14 @@ class SelectFromStep(Generic[T, U]):
         super().__init__()
         self.__query_builder = query_builder
 
-    def where(self, condition: Condition[U, Any]) -> WhereStep[T, U]:
+    def where(self, condition: Condition[TableDefinitionType, Any]) -> WhereStep[ModelType, TableDefinitionType]:
         self.__query_builder.add_condition(condition)
         return WhereStep(self.__query_builder)
 
-    def fetch(self) -> list[T]:
+    def fetch(self) -> list[ModelType]:
         return []
 
-class WhereStep(Generic[T, U]):
+class WhereStep(Generic[ModelType, TableDefinitionType]):
 
     __query_builder: QueryBuilder
 
@@ -102,18 +119,18 @@ class WhereStep(Generic[T, U]):
         super().__init__()
         self.__query_builder = query_builder
 
-    def and_(self, condition: Condition[U, Any]) -> WhereStep[T, U]:
+    def and_(self, condition: Condition[TableDefinitionType, Any]) -> WhereStep[ModelType, TableDefinitionType]:
         self.__query_builder.add_condition(condition)
         return WhereStep(self.__query_builder)
 
-    def fetch(self) -> list[T]:
+    def fetch(self) -> list[ModelType]:
         sql_query = self.__query_builder.build()
         parameters = self.__query_builder.get_parameters()
 
         return sql.fetch_as(sql_query, self.__query_builder.get_table_type(), parameters)
 
-def selectFrom(table: TableDefinition[T, U]) -> SelectFromStep[T, U]:
+def selectFrom(table: TableDefinition[ModelType, TableDefinitionType]) -> SelectFromStep[ModelType, TableDefinitionType]:
     return SelectFromStep(QueryBuilder(table.table_name, table.table_type))
 
-result = selectFrom(USER).where(USER.ID.eq(1)).and_(USER.NAME.eq("Aap")).fetch()
+result = selectFrom(USER).where(USER.ID.le(1)).and_(USER.NAME.eq("Aap")).fetch()
 print(result)
