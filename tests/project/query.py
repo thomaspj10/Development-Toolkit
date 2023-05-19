@@ -21,18 +21,14 @@ class QueryBuilder:
         self.__conditions.append(condition)
 
     def get_parameters(self) -> list[Any]:
-        parameters: list[Any] = []
-        for condition_parameters in [item.parameters for item in self.__conditions]:
-            for parameter in condition_parameters:
-                parameters.append(parameter)
-
-        return parameters
+        return [item._parameter for item in self.__conditions] # type: ignore
 
     def build(self) -> str:
-        condition_string = " and ".join([item.condition for item in self.__conditions])
-        if len(condition_string) > 0: condition_string = " where " + condition_string
+        condition_string = ""
+        for condition in self.__conditions:
+            condition_string += f"{condition._type} ({condition._column} {condition._operator} ?) " # type: ignore
 
-        return f"select rowid as id, * from `{self.__table_name}`{condition_string}"
+        return f"select rowid as id, * from `{self.__table_name}`{condition_string}".strip()
     
     def get_table_type(self) -> Type[Any]:
         return self.__table_type
@@ -43,13 +39,17 @@ ParameterType = TypeVar("ParameterType")
 
 class Condition(Generic[TableDefinitionType, ParameterType]):
 
-    condition: str
-    parameters: list[Any]
+    _type: str
+    _column: str
+    _operator: str
+    _parameter: Any
 
-    def __init__(self, condition: str, parameters: list[Any]) -> None:
+    def __init__(self, column: str, operator: str, parameter: Any) -> None:
         super().__init__()
-        self.condition = condition
-        self.parameters = parameters
+        self._type = ""
+        self._column = column
+        self._operator = operator
+        self._parameter = parameter
 
 class ColumnDefinition(Generic[TableDefinitionType, ParameterType]):
     
@@ -60,19 +60,19 @@ class ColumnDefinition(Generic[TableDefinitionType, ParameterType]):
         self.column_name = column_name
 
     def eq(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"(`{self.column_name}` = ?)", [other])
+        return Condition(self.column_name, "=", other)
     
     def lt(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"(`{self.column_name}` < ?)", [other])
+        return Condition(self.column_name, "<", other)
 
     def le(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"(`{self.column_name}` <= ?)", [other])
+        return Condition(self.column_name, "<=", other)
     
     def gt(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"(`{self.column_name}` > ?)", [other])
+        return Condition(self.column_name, ">", other)
     
     def ge(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"(`{self.column_name}` >= ?)", [other])
+        return Condition(self.column_name, ">=", other)
 
 class TableDefinition(Generic[ModelType, TableDefinitionType]):
     
@@ -105,6 +105,7 @@ class SelectFromStep(Generic[ModelType, TableDefinitionType]):
         self.__query_builder = query_builder
 
     def where(self, condition: Condition[TableDefinitionType, Any]) -> WhereStep[ModelType, TableDefinitionType]:
+        condition._type = "where" # type: ignore
         self.__query_builder.add_condition(condition)
         return WhereStep(self.__query_builder)
 
@@ -120,6 +121,12 @@ class WhereStep(Generic[ModelType, TableDefinitionType]):
         self.__query_builder = query_builder
 
     def and_(self, condition: Condition[TableDefinitionType, Any]) -> WhereStep[ModelType, TableDefinitionType]:
+        condition._type = "and" # type: ignore
+        self.__query_builder.add_condition(condition)
+        return WhereStep(self.__query_builder)
+
+    def or_(self, condition: Condition[TableDefinitionType, Any]) -> WhereStep[ModelType, TableDefinitionType]:
+        condition._type = "or" # type: ignore
         self.__query_builder.add_condition(condition)
         return WhereStep(self.__query_builder)
 
@@ -132,5 +139,5 @@ class WhereStep(Generic[ModelType, TableDefinitionType]):
 def selectFrom(table: TableDefinition[ModelType, TableDefinitionType]) -> SelectFromStep[ModelType, TableDefinitionType]:
     return SelectFromStep(QueryBuilder(table.table_name, table.table_type))
 
-result = selectFrom(USER).where(USER.ID.le(1)).and_(USER.NAME.eq("Aap")).fetch()
+result = selectFrom(USER).where(USER.ID.eq(1)).or_(USER.NAME.eq("Aap")).fetch()
 print(result)
