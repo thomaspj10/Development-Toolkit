@@ -10,6 +10,10 @@ jobs:
       matrix:
         python-version: ["3.11"]
 
+    defaults:
+      run:
+        working-directory: /tests/unit/
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}

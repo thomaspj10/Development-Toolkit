@@ -9,7 +9,7 @@ class ForeignKey:
     column: str
     nullable: bool
 
-class SqlClassGenerator(IGenerator):
+class SqlModelGenerator(IGenerator):
     
     __table: str
     __columns: list[ClassAttribute]
