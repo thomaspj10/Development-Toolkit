@@ -9,7 +9,7 @@ class ForeignKey:
     column: str
     nullable: bool
 
-class SqlClassGenerator(IGenerator):
+class SqlModelGenerator(IGenerator):
     
     __table: str
     __columns: list[ClassAttribute]
@@ -55,7 +55,7 @@ class SqlClassGenerator(IGenerator):
         
         find_by_id_function = FunctionGenerator()
         find_by_id_function.set_name("find_by_id")
-        find_by_id_function.set_body("""result = fetch_as(f"select rowid as id, * from `""" + self.__table + """` where `rowid` = {id}", """ + self.__table + """)
+        find_by_id_function.set_body("""result = fetch_as(f"select rowid as id, * from `""" + self.__table + """` where `rowid` = ?", """ + self.__table + """, [id])
 
 if len(result) == 0:
     return None

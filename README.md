@@ -8,7 +8,8 @@ Development toolkit to increase velocity and code quality.
 2. `pip install -e .`
 
 ## Test suite
-1. Run the test suite `python -m unittest`
+1. Run: `cd /tests/unit/`
+2. Run the test suite `python -m unittest`
 
 ## Examples
 look into `/tests/project/` to see an example project. The project can be ran by running:

@@ -1,8 +1,9 @@
 import re
 from dataclasses import dataclass
-from devkit.generators.ext import SqlClassGenerator
+from devkit.generators.ext import SqlModelGenerator, SqlClassDefinitionGenerator
+from devkit.generators.igenerator import IGenerator
 from devkit.generators.python_file import python_file
-import devkit.sql as sql
+import devkit.sql.database as database
 
 @dataclass
 class SqlColumn:
@@ -32,11 +33,11 @@ def generate_models():
     """
     Generate the Python classes which represent the tables in the database.
     """
-    tables = sql.fetch("select `sql` from sqlite_schema where `name` != 'sqlite_sequence'")
+    tables = database.fetch("select `sql` from sqlite_schema where `name` != 'sqlite_sequence'")
 
     regex = re.compile(r"CREATE TABLE (.*?) \((.*)\)")
 
-    generators: list[SqlClassGenerator] = []
+    generators: list[IGenerator] = []
 
     for table in tables:
         schema = table["sql"]
@@ -59,10 +60,6 @@ def generate_models():
                 column_type = sql_type_to_python_type(column_schema_split[1])
                 column_nullable = not "not null" in column_schema
                 
-                # Ignore the id, because that is always generated.
-                if column_name == "id":
-                    continue
-                
                 # Parse the foreign key seperate.
                 if column_schema.startswith("foreign key"):
                     foreign_key_match = re.match(r"foreign key \((.*?)\) references (.*?)\((.*)\)", column_schema)
@@ -78,17 +75,29 @@ def generate_models():
                 
                 columns.append(SqlColumn(column_name, column_type, column_nullable))
                 
-            # Create the generator.
-            generator = SqlClassGenerator()
-            generator.set_table(table)
+            # Create the model generator.
+            model_generator = SqlModelGenerator()
+            model_generator.set_table(table)
             for column in columns:
-                generator.add_column(column.name, column.type + (" | None" if column.nullable else ""))
+                # Ignore the id, because that is always generated.
+                if column.name == "id":
+                    continue
+
+                model_generator.add_column(column.name, column.type + (" | None" if column.nullable else ""))
 
             for foreign_key in foreign_keys:
-                generator.add_foreign_key(foreign_key.table, foreign_key.column, foreign_key.nullable)
+                model_generator.add_foreign_key(foreign_key.table, foreign_key.column, foreign_key.nullable)
 
-            generators.append(generator)
-            
+            generators.append(model_generator)
+
+            # Create the class definition generator.
+            class_definition_generator = SqlClassDefinitionGenerator()
+            class_definition_generator.set_table(table)
+            for column in columns:
+                class_definition_generator.add_column(column.name, column.type)
+
+            generators.append(class_definition_generator)
+
     with python_file("models.py") as pf:
         pf.add_future_import("annotations")
         
