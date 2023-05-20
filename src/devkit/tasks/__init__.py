@@ -1,23 +1,34 @@
 from typing import Callable
+import sys
+from multiprocessing import Process
 
 CALLABLE_TYPE = Callable[..., None]
 
-class Task:
+__tasks: dict[str, list[CALLABLE_TYPE]] = {}
 
-    __name: str
-    __func: CALLABLE_TYPE
+def __print_help():
+    print("Available tasks:")
+    for task in __tasks:
+        print(f"- {task}")
 
-    def __init__(self, name: str, func: CALLABLE_TYPE) -> None:
-        self.__name = name
-        self.__func = func
+def start():
+    arguments = sys.argv[1::]
 
-    def call(self):
-        print(f"[TASK] - {self.__name}")
-        self.__func()
+    if len(arguments) == 0:
+        __print_help()
+        return
+    
+    if arguments[0] not in __tasks:
+        __print_help()
+        return
+    
+    for func in __tasks[arguments[0]]:
+        process = Process(target=func)
+        process.start()
+        process.join()
 
-def initialize(tasks: list[Task]):
-    for task in tasks:
-        task.call()
-
-def task(func: CALLABLE_TYPE) -> Task:
-    return Task(func.__name__, func)
+"""
+Define a new task which can be dynamically invoked from the cli.
+"""
+def define(name: str, functions: list[CALLABLE_TYPE]):
+    __tasks[name] = functions

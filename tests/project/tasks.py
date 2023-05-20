@@ -1,14 +1,15 @@
 import devkit.tasks as tasks
-import devkit.sql as sql
-import os
 
-@tasks.task
 def generate_models():
+    import devkit.sql as sql
     sql.set_sqlite_file("database.db")
     sql.generate_models()
 
-@tasks.task
 def start():
-    os.system("python main.py")
+    import main
+    main.start()
 
-tasks.initialize([generate_models, start])
+tasks.define("start", [generate_models, start])
+
+if __name__ == "__main__":
+    tasks.start()
