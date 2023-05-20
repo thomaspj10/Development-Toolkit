@@ -21,12 +21,20 @@ class QueryBuilder:
         self.__conditions.append(condition)
 
     def get_parameters(self) -> list[Any]:
-        return [item._parameter for item in self.__conditions] # type: ignore
+        parameters: list[Any] = []
+
+        for condition_parameters in [item._parameters for item in self.__conditions]: # type: ignore
+            for param in condition_parameters:
+                parameters.append(param)
+
+        return parameters
 
     def build(self) -> str:
         condition_string = ""
         for condition in self.__conditions:
-            condition_string += f"{condition._type} (`{condition._column}` {condition._operator} ?) " # type: ignore
+            condition_sql = condition._condition # type: ignore
+            condition_type = condition._type # type: ignore
+            condition_string += f"{condition_type} ({condition_sql}) "
 
         return f"select rowid as id, * from `{self.__table_name}`{condition_string}".strip()
     
@@ -36,16 +44,14 @@ class QueryBuilder:
 class Condition(Generic[TableDefinitionType, ParameterType]):
 
     _type: str
-    _column: str
-    _operator: str
-    _parameter: Any
+    _condition: str
+    _parameters: list[Any]
 
-    def __init__(self, column: str, operator: str, parameter: Any) -> None:
+    def __init__(self, condition: str, parameters: list[Any]) -> None:
         super().__init__()
         self._type = ""
-        self._column = column
-        self._operator = operator
-        self._parameter = parameter
+        self._condition = condition
+        self._parameters = parameters
 
 class ColumnDefinition(Generic[TableDefinitionType, ParameterType]):
     
@@ -56,19 +62,23 @@ class ColumnDefinition(Generic[TableDefinitionType, ParameterType]):
         self.column_name = column_name
 
     def eq(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(self.column_name, "=", other)
+        return Condition(f"`{self.column_name}` = ?", [other])
     
     def lt(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(self.column_name, "<", other)
+        return Condition(f"`{self.column_name}` < ?", [other])
 
     def le(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(self.column_name, "<=", other)
+        return Condition(f"`{self.column_name}` <= ?", [other])
     
     def gt(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(self.column_name, ">", other)
+        return Condition(f"`{self.column_name}` > ?", [other])
     
     def ge(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(self.column_name, ">=", other)
+        return Condition(f"`{self.column_name}` >= ?", [other])
+    
+    def in_(self, other: list[ParameterType]) -> Condition[TableDefinitionType, ParameterType]:
+        wildcard_parameters = ", ".join(["?" for _ in other])
+        return Condition(f"`{self.column_name}` in ({wildcard_parameters})", other)
 
 class TableDefinition(Generic[ModelType, TableDefinitionType]):
     
