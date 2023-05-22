@@ -14,7 +14,7 @@ def attach_endpoints(app: Sanic):
     
     @app.get("/add_user")
     async def add_user(request: Request) -> HTTPResponse:
-        models.User("Thomas", None)
+        models.User("Thomas", None, True)
 
         return json({})
 

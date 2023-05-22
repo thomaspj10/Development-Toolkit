@@ -8,7 +8,7 @@ def generate_models():
     sql.set_sqlite_file("database.db")
 
     sql.execute("create table if not exists Address (id integer primary key autoincrement, name varchar(255))")
-    sql.execute("create table if not exists User (id integer primary key autoincrement, name varchar(255) not null, address_id int, foreign key (address_id) references Address(id))")
+    sql.execute("create table if not exists User (id integer primary key autoincrement, name varchar(255) not null, address_id int, verified boolean, foreign key (address_id) references Address(id))")
 
     sql.generate_models()
 

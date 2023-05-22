@@ -20,7 +20,14 @@ class SqlForeignKey:
 def sql_type_to_python_type(sql_type: str) -> str:
     SQL_TO_PYTHON_TYPES = {
         "varchar": "str",
-        "int": "int"
+        "text": "str",
+        "binary": "bytes",
+
+        "smallint": "bool",
+        "boolean": "bool",
+
+        "int": "int",
+        "float": "float"
     }
     
     for key, python_type in SQL_TO_PYTHON_TYPES.items():
