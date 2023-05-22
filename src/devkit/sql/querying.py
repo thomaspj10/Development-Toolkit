@@ -104,7 +104,10 @@ class SelectFromStep(Generic[ModelType, TableDefinitionType]):
         return WhereStep(self.__query_builder)
 
     def fetch(self) -> list[ModelType]:
-        return []
+        sql_query = self.__query_builder.build()
+        parameters = self.__query_builder.get_parameters()
+
+        return sql.fetch_as(sql_query, self.__query_builder.get_table_type(), parameters)
 
 class WhereStep(Generic[ModelType, TableDefinitionType]):
 
