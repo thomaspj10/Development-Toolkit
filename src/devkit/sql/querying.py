@@ -23,7 +23,7 @@ class QueryBuilder:
     def get_parameters(self) -> list[Any]:
         parameters: list[Any] = []
 
-        for condition_parameters in [item._parameters for item in self.__conditions]: # type: ignore
+        for condition_parameters in [item._parameters for item in self.__conditions]:
             for param in condition_parameters:
                 parameters.append(param)
 
@@ -32,8 +32,8 @@ class QueryBuilder:
     def build(self) -> str:
         condition_string = ""
         for condition in self.__conditions:
-            condition_sql = condition._condition # type: ignore
-            condition_type = condition._type # type: ignore
+            condition_sql = condition._condition
+            condition_type = condition._type
             condition_string += f"{condition_type} ({condition_sql}) "
 
         return f"select rowid as id, * from `{self.__table_name}`{condition_string}".strip()
@@ -99,7 +99,7 @@ class SelectFromStep(Generic[ModelType, TableDefinitionType]):
         self.__query_builder = query_builder
 
     def where(self, condition: Condition[TableDefinitionType, Any]) -> WhereStep[ModelType, TableDefinitionType]:
-        condition._type = "where" # type: ignore
+        condition._type = "where"
         self.__query_builder.add_condition(condition)
         return WhereStep(self.__query_builder)
 
@@ -118,12 +118,12 @@ class WhereStep(Generic[ModelType, TableDefinitionType]):
         self.__query_builder = query_builder
 
     def and_(self, condition: Condition[TableDefinitionType, Any]) -> WhereStep[ModelType, TableDefinitionType]:
-        condition._type = "and" # type: ignore
+        condition._type = "and"
         self.__query_builder.add_condition(condition)
         return WhereStep(self.__query_builder)
 
     def or_(self, condition: Condition[TableDefinitionType, Any]) -> WhereStep[ModelType, TableDefinitionType]:
-        condition._type = "or" # type: ignore
+        condition._type = "or"
         self.__query_builder.add_condition(condition)
         return WhereStep(self.__query_builder)
 
