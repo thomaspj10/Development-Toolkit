@@ -109,6 +109,12 @@ class SelectFromStep(Generic[ModelType, TableDefinitionType]):
 
         return sql.fetch_as(sql_query, self.__query_builder.get_table_type(), parameters)
 
+    def fetch_one(self) -> ModelType | None:
+        result = self.fetch()
+
+        if len(result) == 0: return None
+        return result[0]
+
 class WhereStep(Generic[ModelType, TableDefinitionType]):
 
     __query_builder: QueryBuilder
@@ -133,5 +139,11 @@ class WhereStep(Generic[ModelType, TableDefinitionType]):
 
         return sql.fetch_as(sql_query, self.__query_builder.get_table_type(), parameters)
 
-def selectFrom(table: TableDefinition[ModelType, TableDefinitionType]) -> SelectFromStep[ModelType, TableDefinitionType]:
+    def fetch_one(self) -> ModelType | None:
+        result = self.fetch()
+
+        if len(result) == 0: return None
+        return result[0]
+
+def select_from(table: TableDefinition[ModelType, TableDefinitionType]) -> SelectFromStep[ModelType, TableDefinitionType]:
     return SelectFromStep(QueryBuilder(table.table_name, table.table_type))
