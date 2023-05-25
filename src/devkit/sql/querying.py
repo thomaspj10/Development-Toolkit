@@ -11,14 +11,19 @@ class QueryBuilder:
     __table_name: str
     __table_type: Type[Any]
     __conditions: list[Condition[Any, Any]]
+    __limit: int | None
 
     def __init__(self, table_name: str, table_type: Type[Any]) -> None:
         self.__table_name = table_name
         self.__table_type = table_type
         self.__conditions = []
+        self.__limit = None
 
     def add_condition(self, condition: Condition[Any, Any]):
         self.__conditions.append(condition)
+
+    def set_limit(self, limit: int):
+        self.__limit = limit
 
     def get_parameters(self) -> list[Any]:
         parameters: list[Any] = []
@@ -34,9 +39,13 @@ class QueryBuilder:
         for condition in self.__conditions:
             condition_sql = condition._condition
             condition_type = condition._type
-            condition_string += f"{condition_type} ({condition_sql}) "
+            condition_string += f" {condition_type} ({condition_sql})"
 
-        return f"select rowid as id, * from `{self.__table_name}`{condition_string}".strip()
+        limit_string = ""
+        if self.__limit != None:
+            limit_string = f" limit {self.__limit}"
+
+        return f"select rowid as id, * from `{self.__table_name}`{condition_string}{limit_string}".strip()
     
     def get_table_type(self) -> Type[Any]:
         return self.__table_type
@@ -103,6 +112,10 @@ class SelectFromStep(Generic[ModelType, TableDefinitionType]):
         self.__query_builder.add_condition(condition)
         return WhereStep(self.__query_builder)
 
+    def limit(self, limit: int) -> LimitStep[ModelType, TableDefinitionType]:
+        self.__query_builder.set_limit(limit)
+        return LimitStep(self.__query_builder)
+
     def fetch(self) -> list[ModelType]:
         sql_query = self.__query_builder.build()
         parameters = self.__query_builder.get_parameters()
@@ -110,7 +123,7 @@ class SelectFromStep(Generic[ModelType, TableDefinitionType]):
         return sql.fetch_as(sql_query, self.__query_builder.get_table_type(), parameters)
 
     def fetch_one(self) -> ModelType | None:
-        result = self.fetch()
+        result = self.limit(1).fetch()
 
         if len(result) == 0: return None
         return result[0]
@@ -133,6 +146,10 @@ class WhereStep(Generic[ModelType, TableDefinitionType]):
         self.__query_builder.add_condition(condition)
         return WhereStep(self.__query_builder)
 
+    def limit(self, limit: int) -> LimitStep[ModelType, TableDefinitionType]:
+        self.__query_builder.set_limit(limit)
+        return LimitStep(self.__query_builder)
+
     def fetch(self) -> list[ModelType]:
         sql_query = self.__query_builder.build()
         parameters = self.__query_builder.get_parameters()
@@ -140,10 +157,24 @@ class WhereStep(Generic[ModelType, TableDefinitionType]):
         return sql.fetch_as(sql_query, self.__query_builder.get_table_type(), parameters)
 
     def fetch_one(self) -> ModelType | None:
-        result = self.fetch()
+        result = self.limit(1).fetch()
 
         if len(result) == 0: return None
         return result[0]
+
+class LimitStep(Generic[ModelType, TableDefinitionType]):
+    
+    __query_builder: QueryBuilder
+
+    def __init__(self, query_builder: QueryBuilder) -> None:
+        super().__init__()
+        self.__query_builder = query_builder
+
+    def fetch(self) -> list[ModelType]:
+        sql_query = self.__query_builder.build()
+        parameters = self.__query_builder.get_parameters()
+
+        return sql.fetch_as(sql_query, self.__query_builder.get_table_type(), parameters)
 
 def select_from(table: TableDefinition[ModelType, TableDefinitionType]) -> SelectFromStep[ModelType, TableDefinitionType]:
     return SelectFromStep(QueryBuilder(table.table_name, table.table_type))
