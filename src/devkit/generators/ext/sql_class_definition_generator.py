@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from devkit.generators.igenerator import IGenerator
 from devkit.generators.base.class_generator import ClassGenerator
 from devkit.generators.base.raw_code_generator import RawCodeGenerator
+import re
 
 @dataclass
 class Column:
@@ -36,6 +37,7 @@ class SqlClassDefinitionGenerator(IGenerator):
             class_generator.add_attribute(column.name.upper(), f"ColumnDefinition[{class_name}, {column.type}]", f"ColumnDefinition('{column.name}')")
 
         raw_code_generator = RawCodeGenerator()
-        raw_code_generator.set_code(f"{self.__table.upper()} = {class_name}('{self.__table}', {self.__table})")
+        table_name_snake_case_upper = re.sub(r'(?<!^)(?=[A-Z])', '_', self.__table).upper()
+        raw_code_generator.set_code(f"{table_name_snake_case_upper} = {class_name}('{self.__table}', {self.__table})")
 
         return class_generator.generate(indent) + "\n" + raw_code_generator.generate(indent) + "\n"
