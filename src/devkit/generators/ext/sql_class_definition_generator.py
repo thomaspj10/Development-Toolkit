@@ -32,11 +32,11 @@ class SqlClassDefinitionGenerator(IGenerator):
         class_generator.set_name(class_name)
         class_generator.add_inherited_class(f"TableDefinition[{self.__table}, '{class_name}']")
 
-        class_generator.add_from_import("devkit.sql.querying", ["TableDefinition"])
+        class_generator.add_from_import("devkit.sql.query.definitions", ["TableDefinition"])
 
         for column in self.__columns:
             column_definition_class = "NullableColumnDefinition" if column.nullable else "ColumnDefinition"
-            class_generator.add_from_import("devkit.sql.querying", [column_definition_class])
+            class_generator.add_from_import("devkit.sql.query.definitions", [column_definition_class])
 
             class_generator.add_attribute(column.name.upper(), f"{column_definition_class}[{class_name}, {column.type}]", f"{column_definition_class}('{column.name}')")
 

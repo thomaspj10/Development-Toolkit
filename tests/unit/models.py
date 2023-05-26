@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from devkit.sql import Model, fetch_as
-from devkit.sql.querying import ColumnDefinition, TableDefinition
+from devkit.sql.query.definitions import ColumnDefinition, TableDefinition
 
 @dataclass(slots=True)
 class Address(Model):

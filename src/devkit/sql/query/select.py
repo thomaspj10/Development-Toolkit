@@ -1,12 +1,9 @@
 from __future__ import annotations
-from typing import TypeVar, Generic, Any, Type
+from devkit.sql.query.definitions import TableDefinition, Condition, ModelType, TableDefinitionType
+from typing import Generic, Any, Type
 import devkit.sql as sql
 
-ModelType = TypeVar("ModelType", bound=sql.Model)
-TableDefinitionType = TypeVar("TableDefinitionType", bound="TableDefinition[Any, Any]")
-ParameterType = TypeVar("ParameterType")
-
-class QueryBuilder:
+class SelectQueryBuilder:
     
     __table_name: str
     __table_type: Type[Any]
@@ -50,68 +47,11 @@ class QueryBuilder:
     def get_table_type(self) -> Type[Any]:
         return self.__table_type
 
-class Condition(Generic[TableDefinitionType, ParameterType]):
-
-    _type: str
-    _condition: str
-    _parameters: list[Any]
-
-    def __init__(self, condition: str, parameters: list[Any]) -> None:
-        super().__init__()
-        self._type = ""
-        self._condition = condition
-        self._parameters = parameters
-
-class ColumnDefinition(Generic[TableDefinitionType, ParameterType]):
-    
-    column_name: str
-
-    def __init__(self, column_name: str) -> None:
-        super().__init__()
-        self.column_name = column_name
-
-    def eq(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` = ?", [other])
-    
-    def lt(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` < ?", [other])
-
-    def le(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` <= ?", [other])
-    
-    def gt(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` > ?", [other])
-    
-    def ge(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` >= ?", [other])
-    
-    def in_(self, other: list[ParameterType]) -> Condition[TableDefinitionType, ParameterType]:
-        wildcard_parameters = ", ".join(["?" for _ in other])
-        return Condition(f"`{self.column_name}` in ({wildcard_parameters})", other)
-
-class NullableColumnDefinition(ColumnDefinition[TableDefinitionType, ParameterType]):
-
-    def is_null(self) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` is null", [])
-
-    def is_not_null(self) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` is not null", [])
-
-class TableDefinition(Generic[ModelType, TableDefinitionType]):
-    
-    table_name: str
-    table_type: Type[ModelType]
-
-    def __init__(self, table_name: str, table_type: Type[ModelType]) -> None:
-        super().__init__()
-        self.table_name = table_name
-        self.table_type = table_type
-
 class SelectFromStep(Generic[ModelType, TableDefinitionType]):
     
-    __query_builder: QueryBuilder
+    __query_builder: SelectQueryBuilder
 
-    def __init__(self, query_builder: QueryBuilder) -> None:
+    def __init__(self, query_builder: SelectQueryBuilder) -> None:
         super().__init__()
         self.__query_builder = query_builder
 
@@ -138,9 +78,9 @@ class SelectFromStep(Generic[ModelType, TableDefinitionType]):
 
 class WhereStep(Generic[ModelType, TableDefinitionType]):
 
-    __query_builder: QueryBuilder
+    __query_builder: SelectQueryBuilder
 
-    def __init__(self, query_builder: QueryBuilder) -> None:
+    def __init__(self, query_builder: SelectQueryBuilder) -> None:
         super().__init__()
         self.__query_builder = query_builder
 
@@ -172,9 +112,9 @@ class WhereStep(Generic[ModelType, TableDefinitionType]):
 
 class LimitStep(Generic[ModelType, TableDefinitionType]):
     
-    __query_builder: QueryBuilder
+    __query_builder: SelectQueryBuilder
 
-    def __init__(self, query_builder: QueryBuilder) -> None:
+    def __init__(self, query_builder: SelectQueryBuilder) -> None:
         super().__init__()
         self.__query_builder = query_builder
 
@@ -185,4 +125,4 @@ class LimitStep(Generic[ModelType, TableDefinitionType]):
         return sql.fetch_as(sql_query, self.__query_builder.get_table_type(), parameters)
 
 def select_from(table: TableDefinition[ModelType, TableDefinitionType]) -> SelectFromStep[ModelType, TableDefinitionType]:
-    return SelectFromStep(QueryBuilder(table.table_name, table.table_type))
+    return SelectFromStep(SelectQueryBuilder(table.table_name, table.table_type))
