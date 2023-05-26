@@ -101,7 +101,7 @@ def generate_models():
             class_definition_generator = SqlClassDefinitionGenerator()
             class_definition_generator.set_table(table)
             for column in columns:
-                class_definition_generator.add_column(column.name, column.type)
+                class_definition_generator.add_column(column.name, column.type, column.nullable)
 
             generators.append(class_definition_generator)
 

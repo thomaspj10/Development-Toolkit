@@ -2,6 +2,7 @@ from __future__ import annotations
 import sqlite3
 from typing import Type, TypeVar, Any
 from abc import ABC
+import devkit.logger as logger
 
 connection: sqlite3.Connection
 debug = False
@@ -92,7 +93,7 @@ def execute(sql: str, parameters: list[Any] = []):
     """
     Execute a sql query.
     """
-    if debug: print(f"[SQL] {sql}", parameters)
+    if debug: logger.debug(f"[SQL] {sql} - {parameters}")
     cursor = connection.cursor()
     
     cursor.execute(sql, parameters)
@@ -102,7 +103,7 @@ def insert(sql: str, parameters: list[Any] = []) -> int | None:
     """
     Insert a row into the database and return the row id
     """
-    if debug: print(f"[SQL] {sql}", parameters)
+    if debug: logger.debug(f"[SQL] {sql} - {parameters}")
     cursor = connection.cursor()
     
     cursor.execute(sql, parameters)
@@ -113,7 +114,7 @@ def fetch(sql: str, parameters: list[Any] = []) -> list[sqlite3.Row]:
     """
     Fetch data from the database.
     """
-    if debug: print(f"[SQL] {sql}", parameters)
+    if debug: logger.debug(f"[SQL] {sql} - {parameters}")
     cursor = connection.cursor()
     
     cursor.execute(sql, parameters)

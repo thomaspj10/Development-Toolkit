@@ -89,6 +89,14 @@ class ColumnDefinition(Generic[TableDefinitionType, ParameterType]):
         wildcard_parameters = ", ".join(["?" for _ in other])
         return Condition(f"`{self.column_name}` in ({wildcard_parameters})", other)
 
+class NullableColumnDefinition(ColumnDefinition[TableDefinitionType, ParameterType]):
+
+    def is_null(self) -> Condition[TableDefinitionType, ParameterType]:
+        return Condition(f"`{self.column_name}` is null", [])
+
+    def is_not_null(self) -> Condition[TableDefinitionType, ParameterType]:
+        return Condition(f"`{self.column_name}` is not null", [])
+
 class TableDefinition(Generic[ModelType, TableDefinitionType]):
     
     table_name: str

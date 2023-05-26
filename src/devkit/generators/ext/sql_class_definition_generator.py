@@ -8,6 +8,7 @@ import re
 class Column:
     name: str
     type: str
+    nullable: bool
 
 class SqlClassDefinitionGenerator(IGenerator):
     
@@ -21,8 +22,8 @@ class SqlClassDefinitionGenerator(IGenerator):
     def set_table(self, table: str):
         self.__table = table
     
-    def add_column(self, name: str, type: str):
-        self.__columns.append(Column(name, type))
+    def add_column(self, name: str, type: str, nullable: bool):
+        self.__columns.append(Column(name, type, nullable))
 
     def generate(self, indent: int) -> str:
         class_name = f"{self.__table}Table"
@@ -31,10 +32,13 @@ class SqlClassDefinitionGenerator(IGenerator):
         class_generator.set_name(class_name)
         class_generator.add_inherited_class(f"TableDefinition[{self.__table}, '{class_name}']")
 
-        class_generator.add_from_import("devkit.sql.querying", ["TableDefinition", "ColumnDefinition"])
+        class_generator.add_from_import("devkit.sql.querying", ["TableDefinition"])
 
         for column in self.__columns:
-            class_generator.add_attribute(column.name.upper(), f"ColumnDefinition[{class_name}, {column.type}]", f"ColumnDefinition('{column.name}')")
+            column_definition_class = "NullableColumnDefinition" if column.nullable else "ColumnDefinition"
+            class_generator.add_from_import("devkit.sql.querying", [column_definition_class])
+
+            class_generator.add_attribute(column.name.upper(), f"{column_definition_class}[{class_name}, {column.type}]", f"{column_definition_class}('{column.name}')")
 
         raw_code_generator = RawCodeGenerator()
         table_name_snake_case_upper = re.sub(r'(?<!^)(?=[A-Z])', '_', self.__table).upper()
