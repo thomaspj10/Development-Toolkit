@@ -1,4 +1,4 @@
-import devkit.tasks as tasks
+import devkit.infra as infra
 
 from sanic import Sanic
 from sanic.worker.loader import AppLoader
@@ -19,7 +19,7 @@ def start():
     app.prepare(port=9999) # type: ignore
     Sanic.serve(primary=app, app_loader=loader)
 
-tasks.define("start", [generate_models, start])
+infra.define_task("start", [generate_models, start])
 
 if __name__ == "__main__":
-    tasks.start()
+    infra.start()

@@ -30,5 +30,5 @@ def start():
 """
 Define a new task which can be dynamically invoked from the cli.
 """
-def define(name: str, functions: list[CALLABLE_TYPE]):
+def define_task(name: str, functions: list[CALLABLE_TYPE]):
     __tasks[name] = functions
