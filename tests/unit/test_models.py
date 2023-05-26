@@ -92,5 +92,24 @@ class TestSimpleModelInteractions(unittest.TestCase):
             self.assertEqual(another_address_fetch.id, 3)
             self.assertEqual(another_address_fetch.name, "Random name two")
 
+    def test_07_delete_all_models(self):
+        for address in models.Address.find_all():
+            address.delete()
+
+        self.assertEqual(len(models.Address.find_all()), 0)
+
+    def test_08_create_new_models(self):
+        models.Address("Street!")
+        models.Address("I enter fake info")
+        models.Address(None)
+        models.Address("Another street")
+
+        self.assertEqual(len(models.Address.find_all()), 4)
+
+        self.assertEqual(models.Address.find_all()[0].name, "Street!")
+        self.assertEqual(models.Address.find_all()[1].name, "I enter fake info")
+        self.assertEqual(models.Address.find_all()[2].name, None)
+        self.assertEqual(models.Address.find_all()[3].name, "Another street")
+
 if __name__ == '__main__':
     unittest.main()
