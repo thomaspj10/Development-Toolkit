@@ -124,5 +124,5 @@ class LimitStep(Generic[ModelType, TableDefinitionType]):
 
         return sql.fetch_as(sql_query, self.__query_builder.get_table_type(), parameters)
 
-def select_from(table: TableDefinition[ModelType, TableDefinitionType]) -> SelectFromStep[ModelType, TableDefinitionType]:
+def select(table: TableDefinition[ModelType, TableDefinitionType]) -> SelectFromStep[ModelType, TableDefinitionType]:
     return SelectFromStep(SelectQueryBuilder(table.table_name, table.table_type))

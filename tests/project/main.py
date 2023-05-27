@@ -5,7 +5,7 @@ import models
 def attach_endpoints(app: Sanic):
     @app.get("/users")
     async def users(request: Request) -> HTTPResponse:
-        users = sql.select_from(models.USER).fetch()
+        users = sql.select(models.USER).fetch()
 
         return json([{
             "id": user.id,

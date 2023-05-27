@@ -37,7 +37,7 @@ class TestSimpleModelInteractions(unittest.TestCase):
         self.assertEqual(address_with_name_2.name, "Another random name")
 
     def test_02_select(self):
-        addresses = sql.select_from(models.ADDRESS).fetch()
+        addresses = sql.select(models.ADDRESS).fetch()
 
         self.assertEqual(len(addresses), 3)
         self.assertEqual(addresses[0].id, 1)
@@ -45,41 +45,41 @@ class TestSimpleModelInteractions(unittest.TestCase):
         self.assertEqual(addresses[2].id, 3)
 
     def test_03_select_conditional(self):
-        addresses = sql.select_from(models.ADDRESS).where(models.ADDRESS.ID.eq(1)).fetch()
+        addresses = sql.select(models.ADDRESS).where(models.ADDRESS.ID.eq(1)).fetch()
 
         self.assertEqual(len(addresses), 1)
         self.assertEqual(addresses[0].id, 1)
 
-        address = sql.select_from(models.ADDRESS).where(models.ADDRESS.ID.eq(1)).fetch_one()
+        address = sql.select(models.ADDRESS).where(models.ADDRESS.ID.eq(1)).fetch_one()
         self.assertNotEqual(address, None)
 
         if address != None:
             self.assertEqual(address.id, 1)
 
     def test_04_select_conditional_extra(self):
-        addresses_1 = sql.select_from(models.ADDRESS).where(models.ADDRESS.ID.in_([1, 2])).fetch()
+        addresses_1 = sql.select(models.ADDRESS).where(models.ADDRESS.ID.in_([1, 2])).fetch()
         self.assertEqual(len(addresses_1), 2)
 
-        addresses_2 = sql.select_from(models.ADDRESS).where(models.ADDRESS.ID.gt(2)).fetch()
+        addresses_2 = sql.select(models.ADDRESS).where(models.ADDRESS.ID.gt(2)).fetch()
         self.assertEqual(len(addresses_2), 1)
 
-        addresses_3 = sql.select_from(models.ADDRESS).where(models.ADDRESS.ID.lt(2)).fetch()
+        addresses_3 = sql.select(models.ADDRESS).where(models.ADDRESS.ID.lt(2)).fetch()
         self.assertEqual(len(addresses_3), 1)
 
-        addresses_4 = sql.select_from(models.ADDRESS).where(models.ADDRESS.ID.ge(2)).fetch()
+        addresses_4 = sql.select(models.ADDRESS).where(models.ADDRESS.ID.ge(2)).fetch()
         self.assertEqual(len(addresses_4), 2)
 
-        addresses_5 = sql.select_from(models.ADDRESS).where(models.ADDRESS.ID.le(2)).fetch()
+        addresses_5 = sql.select(models.ADDRESS).where(models.ADDRESS.ID.le(2)).fetch()
         self.assertEqual(len(addresses_5), 2)
 
     def test_05_select_limit(self):
-        addresses_1 = sql.select_from(models.ADDRESS).limit(1).fetch()
+        addresses_1 = sql.select(models.ADDRESS).limit(1).fetch()
         self.assertEqual(len(addresses_1), 1)
 
-        addresses_2 = sql.select_from(models.ADDRESS).limit(2).fetch()
+        addresses_2 = sql.select(models.ADDRESS).limit(2).fetch()
         self.assertEqual(len(addresses_2), 2)
 
-        addresses_3 = sql.select_from(models.ADDRESS).limit(3).fetch()
+        addresses_3 = sql.select(models.ADDRESS).limit(3).fetch()
         self.assertEqual(len(addresses_3), 3)
 
 if __name__ == '__main__':
