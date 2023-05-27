@@ -1,8 +1,9 @@
 from __future__ import annotations
-import sqlite3
 from typing import Type, TypeVar, Any
 from abc import ABC
 import devkit.logger as logger
+import sqlite3
+import json
 
 connection: sqlite3.Connection
 debug = False
@@ -14,6 +15,15 @@ def set_sqlite_file(sqlite_file: str):
     global connection
     connection = sqlite3.connect(sqlite_file)
     connection.row_factory = sqlite3.Row
+
+# Automatically try to set the database based on the provided configuration.
+try:
+    with open("devkit.json", "r") as f:
+        devkit_config = json.load(f)
+
+        set_sqlite_file(devkit_config["sqlite_file"])
+except Exception as e:
+    pass
 
 def close_connection():
     """
@@ -97,6 +107,16 @@ def execute(sql: str, parameters: list[Any] = []):
     cursor = connection.cursor()
     
     cursor.execute(sql, parameters)
+    connection.commit()
+
+def execute_script(sql_script: str):
+    """
+    Execute a sql query.
+    """
+    if debug: logger.debug(f"[SQL] {sql_script}")
+    cursor = connection.cursor()
+    
+    cursor.executescript(sql_script)
     connection.commit()
 
 def insert(sql: str, parameters: list[Any] = []) -> int | None:

@@ -2,6 +2,7 @@ from typing import Callable
 import sys
 from contextlib import contextmanager
 from multiprocessing import Process
+import devkit.sql.migrations
 
 CALLABLE_TYPE = Callable[..., None]
 
@@ -18,15 +19,24 @@ class InfraDefinition:
     def task(self, name: str, functions: list[CALLABLE_TYPE]):
         self.tasks[name] = functions
 
+    def use_migrations(self):
+        devkit.sql.migrations.setup()
+
+        self.task("run_migrations", [devkit.sql.migrations.run_migrations])
+        self.task("create_migration", [devkit.sql.migrations.create_migration])
+
 def __print_help(definition: InfraDefinition):
     print("Available tasks:")
     for task in definition.tasks:
         print(f"- {task}")
 
 @contextmanager
-def define():
+def define(__name__: str):
     definition = InfraDefinition()
     yield definition
+
+    if __name__ != "__main__":
+        return
 
     arguments = sys.argv[1::]
 

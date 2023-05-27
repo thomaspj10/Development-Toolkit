@@ -19,7 +19,6 @@ def attach_endpoints(app: Sanic):
         return json({})
 
 def start():
-    sql.set_sqlite_file("database.db")
     sql.set_debug(True)
 
     app = Sanic("App")

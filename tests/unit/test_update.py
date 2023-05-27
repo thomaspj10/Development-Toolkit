@@ -6,7 +6,7 @@ import os
 
 DB_FILE = "test.db"
 
-class TestSimpleModelInteractions(unittest.TestCase):
+class TestUpdateQuery(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

@@ -42,7 +42,7 @@ def generate_models():
     """
     tables = database.fetch("select `sql` from sqlite_schema where `name` != 'sqlite_sequence'")
 
-    regex = re.compile(r"CREATE TABLE (.*?) \((.*)\)")
+    regex = re.compile(r"CREATE TABLE (.*?) \((.*)\)", re.MULTILINE | re.S)
 
     generators: list[IGenerator] = []
 
