@@ -16,6 +16,6 @@ def start():
     Sanic.serve(primary=app, app_loader=loader)
 
 with infra.define(__name__) as definition:
-    definition.task("start", [generate_models, start])
+    definition.task("start", "Start the application.", [generate_models, start])
 
     definition.use_migrations()
