@@ -1,34 +1,44 @@
 from typing import Callable
 import sys
+from contextlib import contextmanager
 from multiprocessing import Process
 
 CALLABLE_TYPE = Callable[..., None]
 
-__tasks: dict[str, list[CALLABLE_TYPE]] = {}
+class InfraDefinition:
+    
+    tasks: dict[str, list[CALLABLE_TYPE]]
 
-def __print_help():
+    def __init__(self) -> None:
+        self.tasks = {}
+
+    """
+    Define a new task which can be dynamically invoked from the cli.
+    """
+    def task(self, name: str, functions: list[CALLABLE_TYPE]):
+        self.tasks[name] = functions
+
+def __print_help(definition: InfraDefinition):
     print("Available tasks:")
-    for task in __tasks:
+    for task in definition.tasks:
         print(f"- {task}")
 
-def start():
+@contextmanager
+def define():
+    definition = InfraDefinition()
+    yield definition
+
     arguments = sys.argv[1::]
 
     if len(arguments) == 0:
-        __print_help()
+        __print_help(definition)
         return
     
-    if arguments[0] not in __tasks:
-        __print_help()
+    if arguments[0] not in definition.tasks:
+        __print_help(definition)
         return
     
-    for func in __tasks[arguments[0]]:
+    for func in definition.tasks[arguments[0]]:
         process = Process(target=func)
         process.start()
         process.join()
-
-"""
-Define a new task which can be dynamically invoked from the cli.
-"""
-def define_task(name: str, functions: list[CALLABLE_TYPE]):
-    __tasks[name] = functions

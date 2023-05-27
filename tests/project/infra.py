@@ -3,6 +3,12 @@ import devkit.infra as infra
 from sanic import Sanic
 from sanic.worker.loader import AppLoader
 
+def run_migrations():
+    import devkit.sql as sql
+    sql.set_sqlite_file("database.db")
+
+    sql.migrate()
+
 def generate_models():
     import devkit.sql as sql
     sql.set_sqlite_file("database.db")
@@ -19,7 +25,6 @@ def start():
     app.prepare(port=9999) # type: ignore
     Sanic.serve(primary=app, app_loader=loader)
 
-infra.define_task("start", [generate_models, start])
-
 if __name__ == "__main__":
-    infra.start()
+    with infra.define() as definition:
+        definition.task("start", [generate_models, start])
