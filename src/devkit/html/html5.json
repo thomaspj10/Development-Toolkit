@@ -1,0 +1,320 @@
+{
+    "element_groups": [
+        {
+            "name": "metadataContent",
+            "elements": [
+                "base",
+                "command",
+                "link",
+                "meta",
+                "noscript",
+                "script",
+                "style",
+                "title"
+            ]
+        },
+        {
+            "name": "flowContent",
+            "elements": [
+                "a",
+                "abbr",
+                "area",
+                "address",
+                "article",
+                "aside",
+                "audio",
+
+                "b",
+                "bdi",
+                "blockquote",
+                "bdo",
+                "br",
+                "button",
+
+                "canvas",
+                "cite",
+                "code",
+                "command",
+
+                "datalist",
+                "del",
+                "details",
+                "dfn",
+                "dialog",
+                "div",
+                "dl",
+
+                "em",
+                "embed",
+
+                "fieldset",
+                "figure",
+                "figcaption",
+                "footer",
+                "form",
+
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "h5",
+                "h6",
+                "header",
+                "hgroup",
+                "hr",
+
+                "i",
+                "iframe",
+                "img",
+                "picture",
+                "input",
+                "ins",
+
+                "kbd",
+                "keygen",
+
+                "label",
+                "link",
+
+                "main",
+                "map",
+                "mark",
+                "math",
+                "menu",
+                "meta",
+                "meter",
+
+                "nav",
+                "noscript",
+
+                "ol",
+                "object",
+                "output",
+
+                "p",
+                "pre",
+                "progress",
+
+                "q",
+
+                "ruby",
+
+                "samp",
+                "script",
+                "section",
+                "select",
+                "small",
+                "span",
+                "strong",
+                "style",
+                "summary",
+                "sub",
+                "sup",
+                "svg",
+
+                "table",
+                "textarea",
+                "time",
+
+                "ul",
+
+                "var",
+                "video"
+            ]
+        },
+        {
+            "name": "headingContent",
+            "elements": [
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "h5",
+                "h6",
+                "hgroup"
+            ]
+        },
+        {
+            "name": "sectioningContent",
+            "elements": [
+                "article",
+                "aside",
+                "main",
+                "nav",
+                "section"
+            ]
+        },
+        {
+            "name": "phrasingContent",
+            "elements": [
+                "a",
+                "abbr",
+                "area",
+                "audio",
+
+                "b",
+                "bdi",
+                "bdo",
+                "br",
+                "button",
+
+                "canvas",
+                "cite",
+                "code",
+                "command",
+
+                "datalist",
+                "del",
+                "dfn",
+
+                "em",
+                "embed",
+
+                "i",
+                "iframe",
+                "img",
+                "picture",
+                "input",
+                "ins",
+
+                "kbd",
+                "keygen",
+
+                "label",
+                "link",
+
+                "map",
+                "mark",
+                "math",
+                "meta",
+                "meter",
+
+                "noscript",
+
+                "object",
+                "output",
+                "progress",
+
+                "q",
+
+                "ruby",
+
+                "samp",
+                "script",
+                "select",
+                "small",
+                "span",
+                "strong",
+                "sub",
+                "sup",
+                "svg",
+
+                "textarea",
+                "time",
+
+                "var",
+                "video"
+            ]
+        },
+        {
+            "name": "interactiveContent",
+            "elements": [
+                "a",
+                "audio",
+                "button",
+                "details",
+                "embed",
+                "iframe",
+                "img",
+                "picture",
+                "input",
+                "keygen",
+                "label",
+                "menu",
+                "object",
+                "select",
+                "textarea",
+                "video"
+            ]
+        }
+    ],
+    "global_attributes": [
+        {
+            "html": "accesskey",
+            "python": "accesskey",
+            "type": "str"
+        },
+        {
+            "html": "class",
+            "python": "classes",
+            "type": "str"
+        },
+        {
+            "html": "contenteditable",
+            "python": "contenteditable",
+            "type": "str"
+        },
+        {
+            "html": "contextmenu",
+            "python": "contextmenu",
+            "type": "str"
+        },
+        {
+            "html": "dir",
+            "python": "dir",
+            "type": "str"
+        },
+        {
+            "html": "draggable",
+            "python": "draggable",
+            "type": "str"
+        },
+        {
+            "html": "dropzone",
+            "python": "dropzone",
+            "type": "str"
+        },
+        {
+            "html": "hidden",
+            "python": "hidden",
+            "type": "bool"
+        },
+        {
+            "html": "id",
+            "python": "id",
+            "type": "str"
+        },
+        {
+            "html": "lang",
+            "python": "lang",
+            "type": "str"
+        },
+        {
+            "html": "spellcheck",
+            "python": "spellcheck",
+            "type": "str"
+        },
+        {
+            "html": "style",
+            "python": "style",
+            "type": "str"
+        },
+        {
+            "html": "tabindex",
+            "python": "tabindex",
+            "type": "str"
+        },
+        {
+            "html": "title",
+            "python": "title",
+            "type": "str"
+        }
+    ],
+    "elements": [
+        {
+            "name": "div",
+            "parents": [],
+            "attributes": []
+        }
+    ]
+}

@@ -1,0 +1,1294 @@
+html
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="body" minOccurs="1" maxOccurs="1"/>
+        <xsd:element ref="head" minOccurs="0" maxOccurs="1"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+head
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:group ref="metadataContent"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+title
+<xsd:complexType mixed="true">
+    
+</xsd:complexType>
+
+base
+<xsd:complexType>
+    
+    
+    
+</xsd:complexType>
+
+
+link
+<xsd:complexType>
+    
+</xsd:complexType>
+
+
+meta
+<xsd:complexType>
+    
+    <xsd:attribute name="http-equiv">
+        <xsd:simpleType>
+            <xsd:union>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="content-language"/>
+                        <xsd:enumeration value="content-type"/>
+                        <xsd:enumeration value="default-style"/>
+                        <xsd:enumeration value="refresh"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string"/>
+                </xsd:simpleType>
+            </xsd:union>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+<!-- style info, which may include CDATA sections -->
+
+style
+<xsd:complexType mixed="true">
+    
+    <xsd:attribute name="type">
+        <xsd:simpleType>
+            <xsd:union>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="text/css"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string"/>
+                </xsd:simpleType>
+            </xsd:union>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    <xsd:attribute name="scoped">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="scoped"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+<!-- defines a visible heading for the <details> element -->
+
+summary
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:group ref="headingContent"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+<!-- script statements, which may include CDATA sections -->
+
+script
+<xsd:complexType mixed="true">
+    
+    
+    <xsd:attribute name="type" use="required">
+        <xsd:simpleType>
+            <xsd:union>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="text/ecmascript"/>
+                        <xsd:enumeration value="text/javascript"/>
+                        <xsd:enumeration value="text/javascript1.0"/>
+                        <xsd:enumeration value="text/javascript1.1"/>
+                        <xsd:enumeration value="text/javascript1.2"/>
+                        <xsd:enumeration value="text/javascript1.3"/>
+                        <xsd:enumeration value="text/javascript1.4"/>
+                        <xsd:enumeration value="text/javascript1.5"/>
+                        <xsd:enumeration value="text/jscript"/>
+                        <xsd:enumeration value="text/x-javascript"/>
+                        <xsd:enumeration value="text/x-ecmascript"/>
+                        <xsd:enumeration value="text/vbscript"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string"/>
+                </xsd:simpleType>
+            </xsd:union>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    <xsd:attribute name="defer">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="defer"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="async">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="async"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    
+</xsd:complexType>
+
+
+<!-- alternate Content container for non script-based rendering -->
+
+noscript
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+<!--=================== Document Body ====================================-->
+
+body
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+<xsd:element name="section" type="simpleFlowContentElement"/>
+<xsd:element name="nav" type="simpleFlowContentElement"/>
+
+article
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+    
+</xsd:complexType>
+
+<xsd:element name="aside" type="simpleFlowContentElement"/>
+
+<xsd:element name="h1" type="simplePhrasingContentElement"/>
+<xsd:element name="h2" type="simplePhrasingContentElement"/>
+<xsd:element name="h3" type="simplePhrasingContentElement"/>
+<xsd:element name="h4" type="simplePhrasingContentElement"/>
+<xsd:element name="h5" type="simplePhrasingContentElement"/>
+<xsd:element name="h6" type="simplePhrasingContentElement"/>
+
+hgroup
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="h1"/>
+        <xsd:element ref="h2"/>
+        <xsd:element ref="h3"/>
+        <xsd:element ref="h4"/>
+        <xsd:element ref="h5"/>
+        <xsd:element ref="h6"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+<xsd:element name="header" type="simpleFlowContentElement"/>
+<xsd:element name="footer" type="simpleFlowContentElement"/>
+<xsd:element name="address" type="simpleFlowContentElement"/>
+
+<xsd:element name="p" type="simplePhrasingContentElement"/>
+
+br
+<xsd:complexType>
+    
+</xsd:complexType>
+
+
+<xsd:element name="pre" type="simplePhrasingContentElement"/>
+dialog
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+blockquote
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+    
+</xsd:complexType>
+
+
+ol
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="li"/>
+    </xsd:choice>
+    
+    
+    <xsd:attribute name="reversed">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="reversed"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+ul
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="li"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+li
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+    
+</xsd:complexType>
+
+
+dl
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="dd"/>
+        <xsd:element ref="dt"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+dt
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+dd
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+<!--================== The Anchor Element ================================-->
+
+a
+<xsd:complexType mixed="true">
+    <!-- Content Model -->
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    <!-- Attributes -->
+    
+</xsd:complexType>
+
+
+<xsd:element name="em" type="simplePhrasingContentElement"/>
+<xsd:element name="strong" type="simplePhrasingContentElement"/>
+<xsd:element name="small" type="simplePhrasingContentElement"/>
+<xsd:element name="cite" type="simplePhrasingContentElement"/>
+
+q
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+    
+</xsd:complexType>
+
+
+<xsd:element name="dfn" type="simplePhrasingContentElement"/>
+<xsd:element name="abbr" type="simplePhrasingContentElement"/>
+<xsd:element name="code" type="simplePhrasingContentElement"/>
+<xsd:element name="var" type="simplePhrasingContentElement"/>
+<xsd:element name="samp" type="simplePhrasingContentElement"/>
+<xsd:element name="kbd" type="simplePhrasingContentElement"/>
+<xsd:element name="sub" type="simplePhrasingContentElement"/>
+<xsd:element name="sup" type="simplePhrasingContentElement"/>
+<xsd:element name="i" type="simplePhrasingContentElement"/>
+<xsd:element name="b" type="simplePhrasingContentElement"/>
+<xsd:element name="main" type="simplePhrasingContentElement"/>
+<xsd:element name="mark" type="simplePhrasingContentElement"/>
+<xsd:element name="math" type="simplePhrasingContentElement"/>
+
+progress
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+    
+    
+</xsd:complexType>
+
+
+meter
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+time
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+    
+</xsd:complexType>
+
+
+ruby
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+        <xsd:element ref="rt"/>
+        <xsd:element ref="rp"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+<xsd:element name="rt" type="simplePhrasingContentElement"/>
+<xsd:element name="rp" type="simplePhrasingContentElement"/>
+<xsd:element name="bdi" type="simplePhrasingContentElement"/>
+<xsd:element name="bdo" type="simplePhrasingContentElement"/>
+<xsd:element name="span" type="simplePhrasingContentElement"/>
+
+<!--=================== Inserted/Deleted Text ============================-->
+
+ins
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+    
+    
+</xsd:complexType>
+
+
+del
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+    
+    
+</xsd:complexType>
+
+
+<!--==================== Embedded content ======================================-->
+
+figure
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+        <xsd:element ref="legend" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="figcaption" minOccurs="0" maxOccurs="1"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+figcaption
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+img
+<xsd:complexType>
+    
+    <xsd:attribute name="ismap">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="ismap"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+picture
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="source"/>
+        <xsd:element ref="img" maxOccurs="1"/>
+    </xsd:choice>
+</xsd:complexType>
+
+
+
+iframe
+<xsd:complexType mixed="true">
+    
+    
+    
+    
+    
+    <xsd:attribute name="sandbox">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="allow-same-origin"/>
+                <xsd:enumeration value="allow-forms"/>
+                <xsd:enumeration value="allow-scripts"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="seamless">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="seamless"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+embed
+<xsd:complexType>
+    
+</xsd:complexType>
+
+
+object
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:element ref="param" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+param
+<xsd:complexType>
+    
+</xsd:complexType>
+
+
+<!--=================== Interactive content =======================================-->
+
+details
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:element ref="legend" minOccurs="1" maxOccurs="1"/>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+    <xsd:attribute name="open">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="open"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+command
+<xsd:complexType>
+    
+    <xsd:attribute name="type">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="command"/>
+                <xsd:enumeration value="checkbox"/>
+                <xsd:enumeration value="radio"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    
+    <xsd:attribute name="disabled">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="disabled"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="checked">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="checked"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+</xsd:complexType>
+
+
+menu
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="li"/>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+    <xsd:attribute name="type">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="context"/>
+                <xsd:enumeration value="toolbar"/>
+                <xsd:enumeration value="list"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+</xsd:complexType>
+
+
+<!--=================== Miscellaneous elements =======================================-->
+
+legend
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+<xsd:element name="div" type="simpleFlowContentElement"/>
+
+<!--=================== Interactive content =======================================-->
+
+source
+<xsd:complexType>
+    
+    
+    
+    
+</xsd:complexType>
+
+
+audio
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:element ref="source"/>
+    </xsd:choice>
+    
+    
+    <xsd:attribute name="autobuffer">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="autobuffer"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="autoplay">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="autoplay"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="loop">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="loop"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="controls">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="controls"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+video
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:element ref="source"/>
+    </xsd:choice>
+    
+    
+    <xsd:attribute name="autobuffer">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="autobuffer"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="autoplay">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="autoplay"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="loop">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="loop"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="controls">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="controls"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>    
+</xsd:complexType>
+
+
+<!--=================== Horizontal Rule ==================================-->
+
+hr
+<xsd:complexType>
+    
+</xsd:complexType>
+
+
+
+<!--================ Forms ===============================================-->
+
+form
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+    
+    
+    <xsd:attribute name="autocomplete">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="on"/>
+                <xsd:enumeration value="off"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="enctype">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="multipart/form-data"/>
+                <xsd:enumeration value="application/x-www-form-urlencoded"/>
+                <xsd:enumeration value="text/plain"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="method" default="get">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="get"/>
+                <xsd:enumeration value="post"/>
+                <xsd:enumeration value="put"/>
+                <xsd:enumeration value="delete"/>
+                <xsd:enumeration value="patch"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    <xsd:attribute name="novalidate">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="novalidate"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+</xsd:complexType>
+
+
+fieldset
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:element ref="legend" minOccurs="1" maxOccurs="1"/>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+    <xsd:attribute name="disabled">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="disabled"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+label
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+input
+<xsd:complexType>
+    
+    <xsd:attribute name="type">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="button"/>
+                <xsd:enumeration value="checkbox"/>
+                <xsd:enumeration value="color"/>
+                <xsd:enumeration value="date"/>
+                <xsd:enumeration value="datetime"/>
+                <xsd:enumeration value="datetime-local"/>
+                <xsd:enumeration value="email"/>
+                <xsd:enumeration value="file"/>
+                <xsd:enumeration value="hidden"/>
+                <xsd:enumeration value="image"/>
+                <xsd:enumeration value="month"/>
+                <xsd:enumeration value="number"/>
+                <xsd:enumeration value="password"/>
+                <xsd:enumeration value="radio"/>
+                <xsd:enumeration value="range"/>
+                <xsd:enumeration value="reset"/>
+                <xsd:enumeration value="search"/>
+                <xsd:enumeration value="submit"/>
+                <xsd:enumeration value="text"/>
+                <xsd:enumeration value="tel"/>
+                <xsd:enumeration value="time"/>
+                <xsd:enumeration value="url"/>
+                <xsd:enumeration value="week"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    
+    <xsd:attribute name="autofocus">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="autofocus"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="autocomplete">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="on"/>
+                <xsd:enumeration value="off"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="checked">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="checked"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="disabled">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="disabled"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    
+    <xsd:attribute name="formenctype">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="multipart/form-data"/>
+                <xsd:enumeration value="application/x-www-form-urlencoded"/>
+                <xsd:enumeration value="text/plain"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="formmethod" default="get">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="get"/>
+                <xsd:enumeration value="post"/>
+                <xsd:enumeration value="put"/>
+                <xsd:enumeration value="delete"/>
+                <xsd:enumeration value="patch"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="formnovalidate">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="formnovalidate"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    <xsd:attribute name="multiple">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="multiple"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    
+    <xsd:attribute name="readonly">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="readonly"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="required">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="required"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+button
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+    
+    <xsd:attribute name="autofocus">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="autofocus"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="disabled">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="disabled"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    
+    <xsd:attribute name="formenctype">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="multipart/form-data"/>
+                <xsd:enumeration value="application/x-www-form-urlencoded"/>
+                <xsd:enumeration value="text/plain"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="formmethod" default="get">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="get"/>
+                <xsd:enumeration value="post"/>
+                <xsd:enumeration value="put"/>
+                <xsd:enumeration value="delete"/>
+                <xsd:enumeration value="patch"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="formnovalidate">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="formnovalidate"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    <xsd:attribute name="type" default="submit">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="button"/>
+                <xsd:enumeration value="reset"/>
+                <xsd:enumeration value="submit"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+select
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="option"/>
+        <xsd:element ref="optgroup"/>
+    </xsd:choice>
+    
+    <xsd:attribute name="autofocus">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="autofocus"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="disabled">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="disabled"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    <xsd:attribute name="multiple">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="multiple"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    
+    <xsd:attribute name="required">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="required"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+datalist
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="option"/>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+optgroup
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="option"/>
+    </xsd:choice>
+    
+    <xsd:attribute name="disabled">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="disabled"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+</xsd:complexType>
+
+
+option
+<xsd:complexType mixed="true">
+    
+    <xsd:attribute name="disabled">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="disabled"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="selected">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="selected"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    
+</xsd:complexType>
+
+
+textarea
+<xsd:complexType mixed="true">
+    
+    <xsd:attribute name="autofocus">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="autofocus"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="disabled">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="disabled"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    
+    
+    
+    
+    <xsd:attribute name="readonly">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="readonly"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="required">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="required"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    
+    <xsd:attribute name="wrap">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="hard"/>
+                <xsd:enumeration value="soft"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+keygen
+<xsd:complexType mixed="true">
+    
+    <xsd:attribute name="autofocus">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="autofocus"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    <xsd:attribute name="disabled">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="disabled"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    <xsd:attribute name="keytype">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="rsa"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+</xsd:complexType>
+
+
+output
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+    
+    
+    
+</xsd:complexType>
+
+
+<!--================== Canvas ============================-->
+
+canvas
+<xsd:complexType mixed="true">
+    
+    
+    
+</xsd:complexType>
+
+
+map
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+    
+</xsd:complexType>
+
+
+area
+<xsd:complexType>
+    
+    <xsd:attribute name="Shape" default="rect">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="rect"/>
+                <xsd:enumeration value="circle"/>
+                <xsd:enumeration value="poly"/>
+                <xsd:enumeration value="default"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</xsd:complexType>
+
+
+mathml
+<xsd:complexType>
+    
+</xsd:complexType>
+
+
+svg
+<xsd:complexType>
+    
+</xsd:complexType>
+
+
+<!--======================= Tables =======================================-->
+
+table
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="caption" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="colgroup"/>
+        <xsd:element ref="thead" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="tfoot" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="tbody"/>
+        <xsd:element ref="tr"/>
+    </xsd:choice>
+    
+    
+</xsd:complexType>
+
+
+<xsd:element name="caption" type="simpleFlowContentElement"/>
+
+colgroup
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="col"/>
+    </xsd:choice>
+    
+    
+</xsd:complexType>
+
+
+col
+<xsd:complexType>
+    
+    
+</xsd:complexType>
+
+
+thead
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="tr"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+tfoot
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="tr"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+tbody
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="tr"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+tr
+<xsd:complexType>
+    <xsd:choice>
+        <xsd:element ref="th"/>
+        <xsd:element ref="td"/>
+    </xsd:choice>
+    
+</xsd:complexType>
+
+
+th
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="phrasingContent"/>
+    </xsd:choice>
+    
+    
+    
+    
+    <xsd:attribute name="scope">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="col"/>
+                <xsd:enumeration value="colgroup"/>
+                <xsd:enumeration value="row"/>
+                <xsd:enumeration value="rowgroup"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+</xsd:complexType>
+
+
+td
+<xsd:complexType mixed="true">
+    <xsd:choice>
+        <xsd:group ref="flowContent"/>
+    </xsd:choice>
+    
+    
+    
+    
+</xsd:complexType>
+
