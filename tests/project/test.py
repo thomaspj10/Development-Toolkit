@@ -1,4 +1,4 @@
-from devkit.html import *
+from devkit.html.tags2 import *
 
 def info_element():
     return div()(

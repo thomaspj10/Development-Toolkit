@@ -2,3 +2,4 @@
 from devkit.generators.ext.sanic_handler_generator import SanicHandlerGenerator
 from devkit.generators.ext.sql_model_generator import SqlModelGenerator
 from devkit.generators.ext.sql_class_definition_generator import SqlClassDefinitionGenerator
+from devkit.generators.ext.html_tag_generator import HtmlTagGenerator
