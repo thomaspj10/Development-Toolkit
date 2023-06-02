@@ -1,820 +1,327 @@
 html
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="body" minOccurs="1" maxOccurs="1"/>
-        <xsd:element ref="head" minOccurs="0" maxOccurs="1"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+    body
+    head
 
 head
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:group ref="metadataContent"/>
-    </xsd:choice>
-    
-</xsd:complexType>
+    metadataContent
 
 title
-<xsd:complexType mixed="true">
-    
-</xsd:complexType>
+"text": true
 
 base
-<xsd:complexType>
-</xsd:complexType>
 
 
 link
-<xsd:complexType>
-</xsd:complexType>
 
 
 meta
-<xsd:complexType>
-</xsd:complexType>
 
-
-<!-- style info, which may include CDATA sections -->
 
 style
-<xsd:complexType mixed="true">
-</xsd:complexType>
+"text": true
 
-
-<!-- defines a visible heading for the <details> element -->
 
 summary
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent" minOccurs="0" maxOccurs="unbounded"/>
-        <xsd:group ref="headingContent"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
-<!-- script statements, which may include CDATA sections -->
+"text": true
+    phrasingContent
+    headingContent
 
 script
-<xsd:complexType mixed="true">
-    
-    
-    
-    
-    
-    
-    
-    
-</xsd:complexType>
-
-
-<!-- alternate Content container for non script-based rendering -->
+"text": true
 
 noscript
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-</xsd:complexType>
+"text": true
+    flowContent
 
-
-<!--=================== Document Body ====================================-->
 
 body
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-</xsd:complexType>
+    flowContent
 
-
-<xsd:element name="section" type="flowContent"/>
-<xsd:element name="nav" type="flowContent"/>
+section - flowContent
+nav - flowContent
 
 article
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-    
-</xsd:complexType>
+"text": true
 
-<xsd:element name="aside" type="flowContent"/>
+    flowContent
 
-<xsd:element name="h1" type="phrasingContent"/>
-<xsd:element name="h2" type="phrasingContent"/>
-<xsd:element name="h3" type="phrasingContent"/>
-<xsd:element name="h4" type="phrasingContent"/>
-<xsd:element name="h5" type="phrasingContent"/>
-<xsd:element name="h6" type="phrasingContent"/>
+
+aside - flowContent
+
+h1 - phrasingContent
+h2 - phrasingContent
+h3 - phrasingContent
+h4 - phrasingContent
+h5 - phrasingContent
+h6 - phrasingContent
 
 hgroup
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="h1"/>
-        <xsd:element ref="h2"/>
-        <xsd:element ref="h3"/>
-        <xsd:element ref="h4"/>
-        <xsd:element ref="h5"/>
-        <xsd:element ref="h6"/>
-    </xsd:choice>
-    
-</xsd:complexType>
+    h1
+    h2
+    h3
+    h4
+    h5
+    h6
 
+header - flowContent
+footer - flowContent
+address - flowContent
 
-<xsd:element name="header" type="flowContent"/>
-<xsd:element name="footer" type="flowContent"/>
-<xsd:element name="address" type="flowContent"/>
-
-<xsd:element name="p" type="phrasingContent"/>
+p - phrasingContent
 
 br
-<xsd:complexType>
-    
-</xsd:complexType>
 
 
-<xsd:element name="pre" type="phrasingContent"/>
+pre - phrasingContent
 dialog
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-</xsd:complexType>
+    flowContent
 
 
 blockquote
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-    
-</xsd:complexType>
+"text": true
 
+    flowContent
 
 ol
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="li"/>
-    </xsd:choice>
-    
-    
-    
-</xsd:complexType>
-
+    li
 
 ul
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="li"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+    li
 
 li
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-    
-</xsd:complexType>
-
+"text": true
+    flowContent
 
 dl
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="dd"/>
-        <xsd:element ref="dt"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+    dd
+    dt
 
 dt
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+"text": true
+    phrasingContent
 
 dd
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
-
-<!--================== The Anchor Element ================================-->
+"text": true
+    flowContent
 
 a
-<xsd:complexType mixed="true">
-    <!-- Content Model -->
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    <!-- Attributes -->
-    
-</xsd:complexType>
+"text": true
+    flowContent
 
 
-<xsd:element name="em" type="phrasingContent"/>
-<xsd:element name="strong" type="phrasingContent"/>
-<xsd:element name="small" type="phrasingContent"/>
-<xsd:element name="cite" type="phrasingContent"/>
+em - phrasingContent
+strong - phrasingContent
+small - phrasingContent
+cite - phrasingContent
 
 q
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-    
-</xsd:complexType>
+"text": true
+    phrasingContent
 
-
-<xsd:element name="dfn" type="phrasingContent"/>
-<xsd:element name="abbr" type="phrasingContent"/>
-<xsd:element name="code" type="phrasingContent"/>
-<xsd:element name="var" type="phrasingContent"/>
-<xsd:element name="samp" type="phrasingContent"/>
-<xsd:element name="kbd" type="phrasingContent"/>
-<xsd:element name="sub" type="phrasingContent"/>
-<xsd:element name="sup" type="phrasingContent"/>
-<xsd:element name="i" type="phrasingContent"/>
-<xsd:element name="b" type="phrasingContent"/>
-<xsd:element name="main" type="phrasingContent"/>
-<xsd:element name="mark" type="phrasingContent"/>
-<xsd:element name="math" type="phrasingContent"/>
+dfn - phrasingContent
+abbr - phrasingContent
+code - phrasingContent
+var - phrasingContent
+samp - phrasingContent
+kbd - phrasingContent
+sub - phrasingContent
+sup - phrasingContent
+i - phrasingContent
+b - phrasingContent
+main - phrasingContent
+mark - phrasingContent
+math - phrasingContent
 
 progress
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-    
-    
-</xsd:complexType>
+"text": true
 
+    phrasingContent
 
 meter
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+"text": true
+    phrasingContent
 
 time
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-    
-</xsd:complexType>
+"text": true
+    phrasingContent
 
 
 ruby
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-        <xsd:element ref="rt"/>
-        <xsd:element ref="rp"/>
-    </xsd:choice>
-    
-</xsd:complexType>
+"text": true
+    phrasingContent
+    rt
+    rp
 
 
-<xsd:element name="rt" type="phrasingContent"/>
-<xsd:element name="rp" type="phrasingContent"/>
-<xsd:element name="bdi" type="phrasingContent"/>
-<xsd:element name="bdo" type="phrasingContent"/>
-<xsd:element name="span" type="phrasingContent"/>
-
-<!--=================== Inserted/Deleted Text ============================-->
+rt - phrasingContent
+rp - phrasingContent
+bdi - phrasingContent
+bdo - phrasingContent
+span - phrasingContent
 
 ins
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-    
-    
-</xsd:complexType>
-
+"text": true
+    phrasingContent
 
 del
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-    
-    
-</xsd:complexType>
+"text": true
 
-
-<!--==================== Embedded content ======================================-->
+    phrasingContent
 
 figure
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-        <xsd:element ref="legend" minOccurs="0" maxOccurs="1"/>
-        <xsd:element ref="figcaption" minOccurs="0" maxOccurs="1"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+"text": true
+    flowContent
+    legend
+    figcaption
 
 figcaption
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+"text": true
+    flowContent
 
 img
-<xsd:complexType>
-    
-    
-</xsd:complexType>
 
 
 picture
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="source"/>
-        <xsd:element ref="img" maxOccurs="1"/>
-    </xsd:choice>
-</xsd:complexType>
-
-
+    source
+    img
 
 iframe
-<xsd:complexType mixed="true">
-    
-    
-    
-    
-    
-    
-    
-</xsd:complexType>
-
+"text": true
 
 embed
-<xsd:complexType>
-    
-</xsd:complexType>
-
 
 object
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:element ref="param" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+"text": true
+    param
 
 param
-<xsd:complexType>
-    
-</xsd:complexType>
-
-
-<!--=================== Interactive content =======================================-->
 
 details
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:element ref="legend" minOccurs="1" maxOccurs="1"/>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-    
-</xsd:complexType>
-
+"text": true
+    legend
+    flowContent
 
 command
-<xsd:complexType>
-    
-    
-    
-    
-    
-    
-    
-</xsd:complexType>
-
 
 menu
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="li"/>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-    
-    
-</xsd:complexType>
-
-
-<!--=================== Miscellaneous elements =======================================-->
+    li
+    flowContent
 
 legend
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-</xsd:complexType>
+"text": true
+    flowContent
+    phrasingContent
 
+div - flowContent
 
-<xsd:element name="div" type="flowContent"/>
-
-<!--=================== Interactive content =======================================-->
 
 source
-<xsd:complexType>
-    
-    
-    
-    
-</xsd:complexType>
 
 
 audio
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:element ref="source"/>
-    </xsd:choice>
-    
-    
-    
-    
-    
-    
-</xsd:complexType>
-
+"text": true
+    source
 
 video
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:element ref="source"/>
-    </xsd:choice>
-    
-    
-    
-    
-    
-        
-</xsd:complexType>
-
-
-<!--=================== Horizontal Rule ==================================-->
+"text": true
+    source
 
 hr
-<xsd:complexType>
-    
-</xsd:complexType>
 
-
-
-<!--================ Forms ===============================================-->
 
 form
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</xsd:complexType>
-
+"text": true
+    flowContent
 
 fieldset
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:element ref="legend" minOccurs="1" maxOccurs="1"/>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-    
-</xsd:complexType>
-
+"text": true
+    legend
+    flowContent
 
 label
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-</xsd:complexType>
+"text": true
+    phrasingContent
 
 
 input
-<xsd:complexType>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</xsd:complexType>
 
 
 button
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</xsd:complexType>
-
+"text": true
+    phrasingContent
 
 select
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="option"/>
-        <xsd:element ref="optgroup"/>
-    </xsd:choice>
-    
-    
-    
-    
-    
-    
-    
-    
-</xsd:complexType>
-
+    option
+    optgroup
 
 datalist
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="option"/>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+    option
+    phrasingContent
 
 optgroup
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="option"/>
-    </xsd:choice>
-    
-    
-    
-</xsd:complexType>
-
+    option
 
 option
-<xsd:complexType mixed="true">
-    
-    
-    
-    
-    
-</xsd:complexType>
-
+"text": true
 
 textarea
-<xsd:complexType mixed="true">
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</xsd:complexType>
-
+"text": true
 
 keygen
-<xsd:complexType mixed="true">
-    
-    
-    
-    
-    
-    
-    
-</xsd:complexType>
-
+"text": true
 
 output
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-    
-    
-    
-</xsd:complexType>
-
-
-<!--================== Canvas ============================-->
+"text": true
+    phrasingContent
 
 canvas
-<xsd:complexType mixed="true">
-    
-    
-    
-</xsd:complexType>
-
+"text": true
 
 map
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-    
-</xsd:complexType>
-
+    phrasingContent
+    flowContent
 
 area
-<xsd:complexType>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</xsd:complexType>
-
 
 mathml
-<xsd:complexType>
-    
-</xsd:complexType>
-
 
 svg
-<xsd:complexType>
-    
-</xsd:complexType>
-
-
-<!--======================= Tables =======================================-->
 
 table
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="caption" minOccurs="0" maxOccurs="1"/>
-        <xsd:element ref="colgroup"/>
-        <xsd:element ref="thead" minOccurs="0" maxOccurs="1"/>
-        <xsd:element ref="tfoot" minOccurs="0" maxOccurs="1"/>
-        <xsd:element ref="tbody"/>
-        <xsd:element ref="tr"/>
-    </xsd:choice>
-    
-    
-</xsd:complexType>
+    caption
+    colgroup
+    thead
+    tfoot
+    tbody
+    tr
 
-
-<xsd:element name="caption" type="flowContent"/>
+caption - flowContent
 
 colgroup
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="col"/>
-    </xsd:choice>
-    
-    
-</xsd:complexType>
-
+    col
 
 col
-<xsd:complexType>
-    
-    
-</xsd:complexType>
-
 
 thead
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="tr"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+    tr
 
 tfoot
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="tr"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+    tr
 
 tbody
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="tr"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+    tr
 
 tr
-<xsd:complexType>
-    <xsd:choice>
-        <xsd:element ref="th"/>
-        <xsd:element ref="td"/>
-    </xsd:choice>
-    
-</xsd:complexType>
-
+    th
+    td
 
 th
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="phrasingContent"/>
-    </xsd:choice>
-    
-    
-    
-    
-    
-</xsd:complexType>
-
+"text": true
+    phrasingContent
 
 td
-<xsd:complexType mixed="true">
-    <xsd:choice>
-        <xsd:group ref="flowContent"/>
-    </xsd:choice>
-    
-    
-    
-    
-</xsd:complexType>
+"text": true
+
+    flowContent
+
 
