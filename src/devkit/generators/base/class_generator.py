@@ -69,4 +69,7 @@ class ClassGenerator(IGenerator):
         for function in self.__functions:
             result += function.generate(1) + "\n"
         
+        if len(self.__attributes) == 0 and len(self.__functions) == 0:
+            result += f"{INDENT}pass\n\n"
+
         return result

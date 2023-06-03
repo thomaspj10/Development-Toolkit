@@ -6,7 +6,7 @@ from devkit.generators.base import RawCodeGenerator
 with open("html5.json", "r") as f:
     specification = json.load(f)
 
-with python_file("tags2.py") as pf:
+with python_file("tags.py") as pf:
     pf.add_future_import("annotations")
 
     for element in specification["elements"]:
@@ -26,3 +26,11 @@ with python_file("tags2.py") as pf:
         group_generator.add_from_import("typing", ["TypeVar"])
 
         pf.add_generator(group_generator)
+
+with python_file("__init__.py") as pf:
+    elements = ", ".join([element["name"] for element in specification["elements"]])
+
+    raw_code_generator = RawCodeGenerator()
+    raw_code_generator.set_code(f"# type: ignore\nfrom devkit.html.tags import {elements}")
+
+    pf.add_generator(raw_code_generator)

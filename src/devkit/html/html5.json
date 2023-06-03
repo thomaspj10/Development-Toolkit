@@ -472,7 +472,7 @@
         },
         {
             "name": "p",
-            "text": false,
+            "text": true,
             "attributes": [],
             "children": [
                 "phrasingContent"
