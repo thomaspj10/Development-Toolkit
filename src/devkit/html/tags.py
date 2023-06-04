@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Self, TypeVar
+from typing import Self
 from devkit.html.htmlelement import HTMLElement
 
 class Html(HTMLElement):
@@ -845,9 +845,9 @@ class Td(HTMLElement):
 def td() -> Td:
     return Td('td', {}, [])
 
-Metadatacontent = TypeVar('Metadatacontent', Base, Command, Link, Meta, Noscript, Script, Style, Title)
-Flowcontent = TypeVar('Flowcontent', A, Abbr, Area, Address, Article, Aside, Audio, B, Bdi, Blockquote, Bdo, Br, Button, Canvas, Cite, Code, Command, Datalist, Details, Dfn, Dialog, Div, Dl, Em, Embed, Fieldset, Figure, Figcaption, Footer, Form, H1, H2, H3, H4, H5, H6, Header, Hgroup, Hr, I, Iframe, Img, Picture, Input, Ins, Kbd, Keygen, Label, Link, Main, Map, Mark, Math, Menu, Meta, Meter, Nav, Noscript, Ol, Object, Output, P, Pre, Progress, Q, Ruby, Samp, Script, Section, Select, Small, Span, Strong, Style, Summary, Sub, Sup, Svg, Table, Textarea, Time, Ul, Var, Video)
-Headingcontent = TypeVar('Headingcontent', H1, H2, H3, H4, H5, H6, Hgroup)
-Sectioningcontent = TypeVar('Sectioningcontent', Article, Aside, Main, Nav, Section)
-Phrasingcontent = TypeVar('Phrasingcontent', A, Abbr, Area, Audio, B, Bdi, Bdo, Br, Button, Canvas, Cite, Code, Command, Datalist, Dfn, Em, Embed, I, Iframe, Img, Picture, Input, Ins, Kbd, Keygen, Label, Link, Map, Mark, Math, Meta, Meter, Noscript, Object, Output, Progress, Q, Ruby, Samp, Script, Select, Small, Span, Strong, Sub, Sup, Svg, Textarea, Time, Var, Video)
-Interactivecontent = TypeVar('Interactivecontent', A, Audio, Button, Details, Embed, Iframe, Img, Picture, Input, Keygen, Label, Menu, Object, Select, Textarea, Video)
+Metadatacontent = Base | Command | Link | Meta | Noscript | Script | Style | Title
+Flowcontent = A | Abbr | Area | Address | Article | Aside | Audio | B | Bdi | Blockquote | Bdo | Br | Button | Canvas | Cite | Code | Command | Datalist | Details | Dfn | Dialog | Div | Dl | Em | Embed | Fieldset | Figure | Figcaption | Footer | Form | H1 | H2 | H3 | H4 | H5 | H6 | Header | Hgroup | Hr | I | Iframe | Img | Picture | Input | Ins | Kbd | Keygen | Label | Link | Main | Map | Mark | Math | Menu | Meta | Meter | Nav | Noscript | Ol | Object | Output | P | Pre | Progress | Q | Ruby | Samp | Script | Section | Select | Small | Span | Strong | Style | Summary | Sub | Sup | Svg | Table | Textarea | Time | Ul | Var | Video
+Headingcontent = H1 | H2 | H3 | H4 | H5 | H6 | Hgroup
+Sectioningcontent = Article | Aside | Main | Nav | Section
+Phrasingcontent = A | Abbr | Area | Audio | B | Bdi | Bdo | Br | Button | Canvas | Cite | Code | Command | Datalist | Dfn | Em | Embed | I | Iframe | Img | Picture | Input | Ins | Kbd | Keygen | Label | Link | Map | Mark | Math | Meta | Meter | Noscript | Object | Output | Progress | Q | Ruby | Samp | Script | Select | Small | Span | Strong | Sub | Sup | Svg | Textarea | Time | Var | Video
+Interactivecontent = A | Audio | Button | Details | Embed | Iframe | Img | Picture | Input | Keygen | Label | Menu | Object | Select | Textarea | Video

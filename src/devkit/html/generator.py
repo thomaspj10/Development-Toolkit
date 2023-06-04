@@ -19,11 +19,10 @@ with python_file("tags.py") as pf:
 
     for element_group in specification["element_groups"]:
         name = element_group["name"].capitalize()
-        types = ", ".join([child.capitalize() for child in element_group["elements"]])
+        types = " | ".join([child.capitalize() for child in element_group["elements"]])
 
         group_generator = RawCodeGenerator()
-        group_generator.set_code(f"{name} = TypeVar('{name}', {types})")
-        group_generator.add_from_import("typing", ["TypeVar"])
+        group_generator.set_code(f"{name} = {types}")
 
         pf.add_generator(group_generator)
 
