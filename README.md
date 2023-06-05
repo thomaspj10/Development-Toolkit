@@ -7,7 +7,7 @@ Development toolkit to increase velocity and code quality.
 1. Go into the base directory.
 2. `pip install -e .`
 
-# Test suite
+## Test suite
 1. Run: `cd /tests/unit/`
 2. Run the test suite `python -m unittest`
 
