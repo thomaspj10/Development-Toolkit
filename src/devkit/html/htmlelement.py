@@ -13,7 +13,7 @@ class HTMLElement:
         self._children = children
 
     def __str__(self) -> str:
-        attributes_str = " ".join([f'{item[0]}="{item[1]}"' for item in self._attributes.items() if item[1] != None])
+        attributes_str = " ".join([f'{item[0].removeprefix("_").removesuffix("_").replace("_", "-")}="{item[1]}"' for item in self._attributes.items() if item[1] != None])
         if len(attributes_str) > 0:
             attributes_str = " " + attributes_str
 

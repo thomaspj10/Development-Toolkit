@@ -1,7 +1,7 @@
 from devkit.html import *
 
 def info_element():
-    return div()(
+    return div(_class = 10)(
         div(),
         div(),
         div()(
