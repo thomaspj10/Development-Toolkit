@@ -17,6 +17,13 @@ Development toolkit to increase velocity and code quality.
 - Migrations to transform the database to a different state.
 - Type safe way to execute sql queries.
 
+Create the `devkit.json` file to define sql settings.
+```json
+{
+    "sqlite_file": "database.db"
+}
+```
+
 **Infra**
 - Define tasks which can be invoked from the terminal.
 
