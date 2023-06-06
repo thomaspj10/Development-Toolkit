@@ -26,6 +26,9 @@ Development toolkit to increase velocity and code quality.
 **Html**
 - Type safe way to build html with Python.
 
+**Logger**
+- Log messages and exceptions based on a log level.
+
 ## Examples
 look into `/tests/project/` to see an example project. The project can be ran by running:
 ```shell

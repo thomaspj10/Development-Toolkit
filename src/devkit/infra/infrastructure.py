@@ -32,7 +32,7 @@ class InfraDefinition:
         self.task("run_migrations", "Run all migrations which have not run yet.", [devkit.sql.migrations.run_migrations])
         self.task("create_migration", "Create a new migration.", [devkit.sql.migrations.create_migration])
 
-def __print_help(definition: InfraDefinition):
+def print_help(definition: InfraDefinition):
     print("Available tasks:")
     for index, task in enumerate(definition.tasks):
         print(f"{index + 1}. {task.name.ljust(20)} - {task.description}")
@@ -51,11 +51,11 @@ def define(__name__: str):
     arguments = sys.argv[1::]
 
     if len(arguments) == 0:
-        __print_help(definition)
+        print_help(definition)
         return
     
     if arguments[0] not in [item.name for item in definition.tasks]:
-        __print_help(definition)
+        print_help(definition)
         return
     
     task = [item for item in definition.tasks if item.name == arguments[0]][0]
