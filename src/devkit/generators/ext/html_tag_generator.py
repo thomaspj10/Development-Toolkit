@@ -48,10 +48,11 @@ class HtmlTagGenerator(IGenerator):
         use_tag_function = FunctionGenerator()
         use_tag_function.set_name(self.__tag)
         use_tag_function.set_return_type(class_name)
+        use_tag_function.add_argument("_class", "str | None = None")
         use_tag_function.add_argument("**kwargs", "Any")
         use_tag_function.add_from_import("typing", ["Any"])
 
-        use_tag_function.set_body(f"return {class_name}('{self.__tag}', kwargs, [])")
+        use_tag_function.set_body("arguments = { 'class': _class }\n" + f"return {class_name}('{self.__tag}', arguments | kwargs, [])")
 
         return class_generator.generate(indent) + use_tag_function.generate(indent)
     
