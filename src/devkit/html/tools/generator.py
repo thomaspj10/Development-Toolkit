@@ -3,10 +3,12 @@ from devkit.generators.python_file import python_file
 from devkit.generators.ext import HtmlTagGenerator
 from devkit.generators.base import RawCodeGenerator
 
+# Generate Python code which represents the html tags as specified in html5.json
+
 with open("html5.json", "r") as f:
     specification = json.load(f)
 
-with python_file("tags.py") as pf:
+with python_file("../tags.py") as pf:
     pf.add_future_import("annotations")
 
     for element in specification["elements"]:
@@ -26,7 +28,7 @@ with python_file("tags.py") as pf:
 
         pf.add_generator(group_generator)
 
-with python_file("__init__.py") as pf:
+with python_file("../__init__.py") as pf:
     elements = ", ".join([element["name"] for element in specification["elements"]])
 
     raw_code_generator = RawCodeGenerator()
