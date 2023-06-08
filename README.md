@@ -32,6 +32,8 @@ Create the `devkit.json` file to define sql settings.
 
 **Html**
 - Type safe way to build html with Python.
+- Tags are automatically generated from a json file containing the html5 specification.
+- Migration tool to convert native HTMl to the DSL.
 
 **Logger**
 - Log messages and exceptions based on a log level.
