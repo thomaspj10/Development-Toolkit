@@ -28,12 +28,13 @@ class InfraDefinition:
         self.tasks.append(Task(name, description, functions))
 
 
-    def command(self, name: str, description: str, command: str):
+    def command(self, name: str, description: str, commands: list[str]):
         """
-        Define a new task which will act as an alias for a command.
+        Define a new task which will act as an alias for shell commands.
         """
         def wrapper():
-            os.system(command)
+            for command in commands:
+                os.system(command)
         
         self.tasks.append(Task(name, description, [wrapper]))
 
