@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from multiprocessing import Process
 from dataclasses import dataclass
 import devkit.sql.migrations
+import os
 
 CALLABLE_TYPE = Callable[..., None]
 
@@ -20,13 +21,26 @@ class InfraDefinition:
     def __init__(self) -> None:
         self.tasks = []
 
-    """
-    Define a new task which can be dynamically invoked from the cli.
-    """
     def task(self, name: str, description: str, functions: list[CALLABLE_TYPE]):
+        """
+        Define a new task which can be dynamically invoked from the cli.
+        """
         self.tasks.append(Task(name, description, functions))
 
+
+    def command(self, name: str, description: str, command: str):
+        """
+        Define a new task which will act as an alias for a command.
+        """
+        def wrapper():
+            os.system(command)
+        
+        self.tasks.append(Task(name, description, [wrapper]))
+
     def use_migrations(self):
+        """
+        Automatically create two tasks for the creation and running of migrations.
+        """
         devkit.sql.migrations.setup()
 
         self.task("run_migrations", "Run all migrations which have not run yet.", [devkit.sql.migrations.run_migrations])
