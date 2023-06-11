@@ -5,6 +5,9 @@ def generate_models():
 
     sql.generate_models()
 
+def start_workers():
+    pass
+
 def start():
     import app
     from sanic import Sanic
@@ -17,5 +20,6 @@ def start():
 
 with infra.define(__name__) as definition:
     definition.task("start", "Start the application.", [generate_models, start])
+    definition.task("start_workers", "Start the workers.", [start_workers])
 
     definition.use_migrations()
