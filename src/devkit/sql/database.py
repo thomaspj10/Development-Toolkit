@@ -13,7 +13,7 @@ def set_sqlite_file(sqlite_file: str):
     Set the location of the sqlite database. This has to be done before any other sql operation.
     """
     global connection
-    connection = sqlite3.connect(sqlite_file)
+    connection = sqlite3.connect(sqlite_file, check_same_thread=False)
     connection.row_factory = sqlite3.Row
 
 # Automatically try to set the database based on the provided configuration.
