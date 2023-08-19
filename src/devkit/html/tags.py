@@ -564,7 +564,7 @@ def bdo(_class: str | None = None, **kwargs: Any) -> Bdo:
 
 class Span(HTMLElement):
 
-    def __call__(self: Self, *args: Phrasingcontent | list[Phrasingcontent]) -> Self:
+    def __call__(self: Self, *args: Phrasingcontent | str | list[Phrasingcontent | str]) -> Self:
         return Span(self._tag, self._attributes, self.get_children_from_args(args))
 
 def span(_class: str | None = None, **kwargs: Any) -> Span:

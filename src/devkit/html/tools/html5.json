@@ -775,7 +775,7 @@
         },
         {
             "name": "span",
-            "text": false,
+            "text": true,
             "attributes": [],
             "children": [
                 "phrasingContent"
