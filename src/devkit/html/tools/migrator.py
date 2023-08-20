@@ -1,7 +1,17 @@
 from __future__ import annotations
 from html.parser import HTMLParser
+import json
 
 # Automate the migration of native html into the html DSL provided by devkit.
+
+INSTANT_CLOSE_TAGS: list[str] = []
+with open("html5.json", "r") as f:
+    html5_specification = json.load(f)
+
+    for element in html5_specification["elements"]:
+        if len(element["children"]) == 0:
+            INSTANT_CLOSE_TAGS.append(element["name"])
+
 
 file = input("HTML file: ")
 
@@ -12,7 +22,6 @@ result = "from devkit.html import *\n\n"
 indent = 0
 
 TAB = "    "
-INSTANT_CLOSE_TAGS = ["meta", "input"]
 
 class MyHTMLParser(HTMLParser):
 
@@ -26,12 +35,12 @@ class MyHTMLParser(HTMLParser):
 
         indent_str = TAB * indent
 
-        result += f"{indent_str}{tag}({class_str}{attributes_str})(\n"
+        result += f"{indent_str}{tag}({class_str}{attributes_str}"
 
         if tag in INSTANT_CLOSE_TAGS:
-            self.handle_endtag(tag)
             indent += 1
         else:
+            result += ")(\n"
             indent += 1
 
     def handle_endtag(self, tag: str):
