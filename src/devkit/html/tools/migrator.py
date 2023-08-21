@@ -9,7 +9,7 @@ with open("html5.json", "r") as f:
     html5_specification = json.load(f)
 
     for element in html5_specification["elements"]:
-        if len(element["children"]) == 0:
+        if len(element["children"]) == 0 and not element["text"]:
             INSTANT_CLOSE_TAGS.append(element["name"])
 
 
@@ -48,7 +48,7 @@ class MyHTMLParser(HTMLParser):
 
         indent -= 1
 
-        indent_str = TAB * indent
+        indent_str = TAB * indent if tag not in INSTANT_CLOSE_TAGS else ""
         result += f"{indent_str}),\n"
 
     def handle_data(self, data: str):
