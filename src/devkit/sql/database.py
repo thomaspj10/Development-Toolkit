@@ -5,32 +5,39 @@ import devkit.logger as logger
 import sqlite3
 import json
 
-connection: sqlite3.Connection
+_connection: sqlite3.Connection | None = None
 debug = False
 
 def set_sqlite_file(sqlite_file: str):
     """
     Set the location of the sqlite database. This has to be done before any other sql operation.
     """
-    global connection
-    connection = sqlite3.connect(sqlite_file, check_same_thread=False)
-    connection.row_factory = sqlite3.Row
+    global _connection
+    _connection = sqlite3.connect(sqlite_file, check_same_thread=False)
+    _connection.row_factory = sqlite3.Row
 
-# Automatically try to set the database based on the provided configuration.
-try:
-    with open("devkit.json", "r") as f:
-        devkit_config = json.load(f)
+def get_connection() -> sqlite3.Connection:
+    if _connection != None:
+        return _connection
+    
+    # Automatically try to set the database based on the provided configuration.
+    try:
+        with open("devkit.json", "r") as f:
+            devkit_config = json.load(f)
 
-        set_sqlite_file(devkit_config["sqlite_file"])
-except Exception as e:
-    pass
+            set_sqlite_file(devkit_config["sqlite_file"])
+    except Exception:
+        raise Exception("Unable to create a sqlite connection. Does devkit.json not exist?")
+
+    assert _connection != None
+    return _connection
 
 def close_connection():
     """
     Close the connection to the sqlite database if any exists.
     """
-    if connection != None: # type: ignore
-        connection.close()
+    if _connection != None: # type: ignore
+        _connection.close()
 
 def set_debug(is_debug: bool):
     """
@@ -104,30 +111,30 @@ def execute(sql: str, parameters: list[Any] = []):
     Execute a sql query.
     """
     if debug: logger.debug(f"[SQL] {sql} - {parameters}")
-    cursor = connection.cursor()
+    cursor = get_connection().cursor()
     
     cursor.execute(sql, parameters)
-    connection.commit()
+    get_connection().commit()
 
 def execute_script(sql_script: str):
     """
     Execute a sql query.
     """
     if debug: logger.debug(f"[SQL] {sql_script}")
-    cursor = connection.cursor()
+    cursor = get_connection().cursor()
     
     cursor.executescript(sql_script)
-    connection.commit()
+    get_connection().commit()
 
 def insert(sql: str, parameters: list[Any] = []) -> int | None:
     """
     Insert a row into the database and return the row id
     """
     if debug: logger.debug(f"[SQL] {sql} - {parameters}")
-    cursor = connection.cursor()
+    cursor = get_connection().cursor()
     
     cursor.execute(sql, parameters)
-    connection.commit()
+    get_connection().commit()
     return cursor.lastrowid
 
 def fetch(sql: str, parameters: list[Any] = []) -> list[sqlite3.Row]:
@@ -135,7 +142,7 @@ def fetch(sql: str, parameters: list[Any] = []) -> list[sqlite3.Row]:
     Fetch data from the database.
     """
     if debug: logger.debug(f"[SQL] {sql} - {parameters}")
-    cursor = connection.cursor()
+    cursor = get_connection().cursor()
     
     cursor.execute(sql, parameters)
     return cursor.fetchall()

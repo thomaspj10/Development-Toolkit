@@ -1,7 +1,6 @@
 from typing import Callable
 import sys
 from contextlib import contextmanager
-from multiprocessing import Process
 from dataclasses import dataclass
 import devkit.sql.migrations
 import os
@@ -76,6 +75,4 @@ def define(__name__: str):
     task = [item for item in definition.tasks if item.name == arguments[0]][0]
 
     for func in task.functions:
-        process = Process(target=func)
-        process.start()
-        process.join()
+        func()
