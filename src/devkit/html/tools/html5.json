@@ -679,7 +679,7 @@
         },
         {
             "name": "b",
-            "text": false,
+            "text": true,
             "attributes": [],
             "children": [
                 "phrasingContent"
