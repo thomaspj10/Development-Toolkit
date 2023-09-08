@@ -240,7 +240,7 @@ def br(_class: str | None = None, **kwargs: Any) -> Br:
 
 class Pre(HTMLElement):
 
-    def __call__(self: Self, *args: Phrasingcontent | list[Phrasingcontent]) -> Self:
+    def __call__(self: Self, *args: Phrasingcontent | str | list[Phrasingcontent | str]) -> Self:
         return Pre(self._tag, self._attributes, self.get_children_from_args(args))
 
 def pre(_class: str | None = None, **kwargs: Any) -> Pre:

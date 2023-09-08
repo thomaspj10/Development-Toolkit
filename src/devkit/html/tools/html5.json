@@ -486,7 +486,7 @@
         },
         {
             "name": "pre",
-            "text": false,
+            "text": true,
             "attributes": [],
             "children": [
                 "phrasingContent"
