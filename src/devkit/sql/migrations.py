@@ -39,9 +39,11 @@ def run_migration(file: str):
         success = False
 
         try:
-            database.execute_script(f.read())
+            sql = "BEGIN;\n\n" + f.read() + "\n\nCOMMIT;"
+            database.execute_script(sql)
             success = True
         except Exception as e:
+            database.execute("ROLLBACK;")
             logger.error(f"There was an error while trying to execute migration {file}")
             logger.error(e)
 
