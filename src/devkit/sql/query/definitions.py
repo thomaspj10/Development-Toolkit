@@ -41,7 +41,7 @@ class ColumnDefinition(Generic[TableDefinitionType, ParameterType]):
     def ge(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
         return Condition(f"`{self.column_name}` >= ?", [other])
     
-    def like(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
+    def like(self, other: str) -> Condition[TableDefinitionType, ParameterType]:
         return Condition(f"`{self.column_name}` like ?", [other])
     
     def in_(self, other: list[ParameterType]) -> Condition[TableDefinitionType, ParameterType]:
