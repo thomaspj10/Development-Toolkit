@@ -41,6 +41,9 @@ class ColumnDefinition(Generic[TableDefinitionType, ParameterType]):
     def ge(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
         return Condition(f"`{self.column_name}` >= ?", [other])
     
+    def like(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
+        return Condition(f"`{self.column_name}` like ?", [other])
+    
     def in_(self, other: list[ParameterType]) -> Condition[TableDefinitionType, ParameterType]:
         wildcard_parameters = ", ".join(["?" for _ in other])
         return Condition(f"`{self.column_name}` in ({wildcard_parameters})", other)
