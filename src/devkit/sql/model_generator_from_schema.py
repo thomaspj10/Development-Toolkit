@@ -62,7 +62,7 @@ def generate_models():
                 column_schema = column_schema.strip()
                 column_schema_split = column_schema.split(" ")
                 
-                # Get the data about this specific schema.
+                # Get the data about this specific column.
                 column_name = column_schema_split[0]
                 column_type = sql_type_to_python_type(column_schema_split[1])
                 column_nullable = not "not null" in column_schema

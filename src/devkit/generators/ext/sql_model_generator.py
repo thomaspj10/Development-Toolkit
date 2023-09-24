@@ -77,9 +77,9 @@ return result[0]""")
         # Foreign key functions
         for foreign_key in self.__foreign_keys:
             foreign_key_function = FunctionGenerator()
-            
-            snake_case_table_name = ''.join(['_' + c.lower() if c.isupper() else c for c in foreign_key.table]).lstrip('_')
-            foreign_key_function.set_name(f"get_{snake_case_table_name}")
+
+            snake_case_column_name = foreign_key.column.replace("_id", "")
+            foreign_key_function.set_name(f"get_{snake_case_column_name}")
             
             return_type = f"{foreign_key.table} | None" if foreign_key.nullable else foreign_key.table
             foreign_key_function.set_return_type(return_type)
