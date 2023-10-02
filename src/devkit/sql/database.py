@@ -2,32 +2,19 @@ from __future__ import annotations
 from typing import Type, TypeVar, Any
 from abc import ABC
 import devkit.logger as logger
-import sqlite3
-import json
+import psycopg2
 
-_connection: sqlite3.Connection | None = None
+_connection = None
 debug = False
+    
 
-def set_sqlite_file(sqlite_file: str):
-    """
-    Set the location of the sqlite database. This has to be done before any other sql operation.
-    """
+def get_connection():
     global _connection
-    _connection = sqlite3.connect(sqlite_file, check_same_thread=False)
-    _connection.row_factory = sqlite3.Row
-
-def get_connection() -> sqlite3.Connection:
     if _connection != None:
         return _connection
     
     # Automatically try to set the database based on the provided configuration.
-    try:
-        with open("devkit.json", "r") as f:
-            devkit_config = json.load(f)
-
-            set_sqlite_file(devkit_config["sqlite_file"])
-    except Exception:
-        raise Exception("Unable to create a sqlite connection. Does devkit.json not exist?")
+    _connection = psycopg2.connect("dbname=Wildbuck user=postgres password=thomaspj10")
 
     assert _connection != None
     return _connection
@@ -123,7 +110,7 @@ def execute_script(sql_script: str):
     if debug: logger.debug(f"[SQL] {sql_script}")
     cursor = get_connection().cursor()
     
-    cursor.executescript(sql_script)
+    cursor.executemany(sql_script, [])
     get_connection().commit()
 
 def insert(sql: str, parameters: list[Any] = []) -> int | None:
@@ -137,7 +124,7 @@ def insert(sql: str, parameters: list[Any] = []) -> int | None:
     get_connection().commit()
     return cursor.lastrowid
 
-def fetch(sql: str, parameters: list[Any] = []) -> list[sqlite3.Row]:
+def fetch(sql: str, parameters: list[Any] = []) -> list[tuple[Any, ...]]:
     """
     Fetch data from the database.
     """
@@ -154,11 +141,11 @@ def fetch_as(sql: str, type: Type[T], parameters: list[Any] = []) -> list[T]:
     return [create_class_instance(row, type) for row in fetch(sql, parameters)]
 
 # Create a new class instance from a sqlite row.
-def create_class_instance(row: sqlite3.Row, type: Type[T]) -> T:
+def create_class_instance(row: tuple[Any, ...], type: Type[T]) -> T:
     obj = type.__new__(type)
     
-    for annotation in get_class_annotations(obj):
-        value = row[annotation]
+    for index, annotation in enumerate(get_class_annotations(obj)):
+        value = row[index]
         obj.__setattr__(annotation, value)
         
     return obj

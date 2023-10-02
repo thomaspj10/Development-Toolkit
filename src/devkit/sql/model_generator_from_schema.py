@@ -86,7 +86,7 @@ def generate_models():
             model_generator = SqlModelGenerator()
             model_generator.set_table(table)
             for column in columns:
-                # Ignore the id, because that is always generated.
+                # Ignore the id because that is always generated.
                 if column.name == "id":
                     continue
 
