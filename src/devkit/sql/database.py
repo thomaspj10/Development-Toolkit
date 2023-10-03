@@ -3,6 +3,7 @@ from typing import Type, TypeVar, Any
 from abc import ABC
 import devkit.logger as logger
 import psycopg2
+import psycopg2.extras
 
 _connection = None
 debug = False
@@ -98,9 +99,9 @@ def execute(sql: str, parameters: list[Any] = []):
     Execute a sql query.
     """
     if debug: logger.debug(f"[SQL] {sql} - {parameters}")
-    cursor = get_connection().cursor()
+    cursor = get_connection().cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     
-    cursor.execute(sql, parameters)
+    cursor.execute(sql, parameters) # type: ignore
     get_connection().commit()
 
 def execute_script(sql_script: str):
@@ -108,7 +109,7 @@ def execute_script(sql_script: str):
     Execute a sql query.
     """
     if debug: logger.debug(f"[SQL] {sql_script}")
-    cursor = get_connection().cursor()
+    cursor = get_connection().cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     
     cursor.executemany(sql_script, [])
     get_connection().commit()
@@ -118,20 +119,20 @@ def insert(sql: str, parameters: list[Any] = []) -> int | None:
     Insert a row into the database and return the row id
     """
     if debug: logger.debug(f"[SQL] {sql} - {parameters}")
-    cursor = get_connection().cursor()
+    cursor = get_connection().cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     
-    cursor.execute(sql, parameters)
+    cursor.execute(sql, parameters) # type: ignore
     get_connection().commit()
     return cursor.lastrowid
 
-def fetch(sql: str, parameters: list[Any] = []) -> list[tuple[Any, ...]]:
+def fetch(sql: str, parameters: list[Any] = []) -> list[psycopg2.extras.RealDictRow]:
     """
     Fetch data from the database.
     """
     if debug: logger.debug(f"[SQL] {sql} - {parameters}")
-    cursor = get_connection().cursor()
+    cursor = get_connection().cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     
-    cursor.execute(sql, parameters)
+    cursor.execute(sql, parameters) # type: ignore
     return cursor.fetchall()
 
 def fetch_as(sql: str, type: Type[T], parameters: list[Any] = []) -> list[T]:
@@ -141,11 +142,11 @@ def fetch_as(sql: str, type: Type[T], parameters: list[Any] = []) -> list[T]:
     return [create_class_instance(row, type) for row in fetch(sql, parameters)]
 
 # Create a new class instance from a sqlite row.
-def create_class_instance(row: tuple[Any, ...], type: Type[T]) -> T:
+def create_class_instance(row: psycopg2.extras.RealDictRow, type: Type[T]) -> T:
     obj = type.__new__(type)
     
-    for index, annotation in enumerate(get_class_annotations(obj)):
-        value = row[index]
+    for annotation in get_class_annotations(obj):
+        value = row[annotation]
         obj.__setattr__(annotation, value)
         
     return obj
