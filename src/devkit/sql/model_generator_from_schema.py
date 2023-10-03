@@ -50,6 +50,9 @@ def generate_models():
         schema = table["sql"]
         columns: list[SqlColumn] = []
         foreign_keys: list[SqlForeignKey] = []
+
+        if schema == None:
+            continue
         
         match = regex.match(schema)
 
