@@ -1,8 +1,6 @@
 # Development Toolkit
 Development toolkit to increase velocity and code quality.
 
-![Tests](https://github.com/thomaspj10/Development-Toolkit/actions/workflows/tests.yaml/badge.svg)
-
 ## Installation
 1. Go into the base directory.
 2. `pip install -e .`
@@ -17,13 +15,6 @@ Development toolkit to increase velocity and code quality.
 - Migrations to transform the database to a different state.
 - Type safe way to execute sql queries.
 
-Create the `devkit.json` file to define sql settings.
-```json
-{
-    "sqlite_file": "database.db"
-}
-```
-
 **Infra**
 - Define tasks which can be invoked from the terminal.
 
@@ -37,9 +28,3 @@ Create the `devkit.json` file to define sql settings.
 
 **Logger**
 - Log messages and exceptions based on a log level.
-
-## Examples
-look into `/tests/project/` to see an example project. The project can be ran by running:
-```shell
-python infra.py
-```
