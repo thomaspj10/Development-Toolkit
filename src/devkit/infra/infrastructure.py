@@ -55,8 +55,8 @@ class InfraDefinition:
         self._user = user
         self._password = password
 
-        self.task("run_migrations", "Run all migrations which have not run yet.", [devkit.sql.migrations.run_migrations])
-        self.task("create_migration", "Create a new migration.", [devkit.sql.migrations.create_migration])
+        self.task("run_migrations", "Run all migrations which have not run yet.", [devkit.sql.migrations.run_migrations], is_database_required=True)
+        self.task("create_migration", "Create a new migration.", [devkit.sql.migrations.create_migration], is_database_required=True)
 
 def print_help(definition: InfraDefinition):
     print("Available _tasks:")
