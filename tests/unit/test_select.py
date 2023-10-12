@@ -15,7 +15,7 @@ class TestSelectQuery(unittest.TestCase):
 
         sql.set_sqlite_file(DB_FILE)
         sql.execute("drop table if exists Address")
-        sql.execute("create table Address (id integer primary key autoincrement, name varchar(255))")
+        sql.execute("create table Address (id integer primary key auto_increment, name varchar(255))")
     
     @classmethod
     def tearDownClass(cls):

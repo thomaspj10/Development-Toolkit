@@ -11,7 +11,7 @@ class Address(Model):
 
     @staticmethod
     def find_by_id(id: int) -> Address | None:
-        result = fetch_as(f"select rowid as id, * from `Address` where `rowid` = ?", Address, [id])
+        result = fetch_as(f"select * from `Address` where `id` = %s", Address, [id])
         
         if len(result) == 0:
             return None
@@ -20,7 +20,7 @@ class Address(Model):
 
     @staticmethod
     def find_all() -> list[Address]:
-        return fetch_as(f"select rowid as id, * from `Address`", Address)
+        return fetch_as(f"select * from `Address`", Address)
 
 
 class AddressTable(TableDefinition[Address, 'AddressTable']):

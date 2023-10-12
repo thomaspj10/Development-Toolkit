@@ -12,7 +12,7 @@ class DevkitMigrations(Model):
 
     @staticmethod
     def find_by_id(id: int) -> DevkitMigrations | None:
-        result = fetch_as(f"select rowid as id, * from `DevkitMigrations` where `rowid` = ?", DevkitMigrations, [id])
+        result = fetch_as(f"select * from `DevkitMigrations` where `id` = %s", DevkitMigrations, [id])
         
         if len(result) == 0:
             return None
@@ -21,7 +21,7 @@ class DevkitMigrations(Model):
 
     @staticmethod
     def find_all() -> list[DevkitMigrations]:
-        return fetch_as(f"select rowid as id, * from `DevkitMigrations`", DevkitMigrations)
+        return fetch_as(f"select * from `DevkitMigrations`", DevkitMigrations)
 
 
 class DevkitMigrationsTable(TableDefinition[DevkitMigrations, 'DevkitMigrationsTable']):

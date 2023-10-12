@@ -27,25 +27,25 @@ class ColumnDefinition(Generic[TableDefinitionType, ParameterType]):
         self.column_name = column_name
 
     def eq(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` = ?", [other])
+        return Condition(f"`{self.column_name}` = %s", [other])
     
     def lt(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` < ?", [other])
+        return Condition(f"`{self.column_name}` < %s", [other])
 
     def le(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` <= ?", [other])
+        return Condition(f"`{self.column_name}` <= %s", [other])
     
     def gt(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` > ?", [other])
+        return Condition(f"`{self.column_name}` > %s", [other])
     
     def ge(self, other: ParameterType) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` >= ?", [other])
+        return Condition(f"`{self.column_name}` >= %s", [other])
     
     def like(self, other: str) -> Condition[TableDefinitionType, ParameterType]:
-        return Condition(f"`{self.column_name}` like ?", [other])
+        return Condition(f"`{self.column_name}` like %s", [other])
     
     def in_(self, other: list[ParameterType]) -> Condition[TableDefinitionType, ParameterType]:
-        wildcard_parameters = ", ".join(["?" for _ in other])
+        wildcard_parameters = ", ".join(["%s" for _ in other])
         return Condition(f"`{self.column_name}` in ({wildcard_parameters})", other)
 
 class NullableColumnDefinition(ColumnDefinition[TableDefinitionType, ParameterType]):

@@ -39,7 +39,7 @@ class UpdateQueryBuilder:
         return parameters
 
     def build(self) -> str:
-        set_string = ", ".join([f"`{item.column}` = ?" for item in self.__updates])
+        set_string = ", ".join([f"`{item.column}` = %s" for item in self.__updates])
 
         condition_string = ""
         for condition in self.__conditions:

@@ -55,7 +55,7 @@ class SqlModelGenerator(IGenerator):
         
         find_by_id_function = FunctionGenerator()
         find_by_id_function.set_name("find_by_id")
-        find_by_id_function.set_body("""result = fetch_as(f"select rowid as id, * from `""" + self.__table + """` where `rowid` = ?", """ + self.__table + """, [id])
+        find_by_id_function.set_body("""result = fetch_as(f"select * from `""" + self.__table + """` where `id` = %s", """ + self.__table + """, [id])
 
 if len(result) == 0:
     return None
@@ -67,7 +67,7 @@ return result[0]""")
         
         find_all_function = FunctionGenerator()
         find_all_function.set_name("find_all")
-        find_all_function.set_body("""return fetch_as(f"select rowid as id, * from `""" + self.__table + """`", """ + self.__table + """)""")
+        find_all_function.set_body("""return fetch_as(f"select * from `""" + self.__table + """`", """ + self.__table + """)""")
         find_all_function.set_return_type(f"list[{self.__table}]")
         find_all_function.add_decorator(staticmethod_decorator)
         

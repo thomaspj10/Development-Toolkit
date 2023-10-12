@@ -3,6 +3,7 @@ import sys
 from contextlib import contextmanager
 from dataclasses import dataclass
 import devkit.sql.migrations
+import devkit.sql as sql
 import os
 
 CALLABLE_TYPE = Callable[..., None]
@@ -37,11 +38,11 @@ class InfraDefinition:
         
         self.tasks.append(Task(name, description, [wrapper]))
 
-    def use_migrations(self):
+    def use_database(self, host: str, port: int, database: str, user: str, password: str):
         """
-        Automatically create two tasks for the creation and running of migrations.
+        Automatically connect to the database. Creates two tasks for the creation and running of migrations.
         """
-        devkit.sql.migrations.setup()
+        sql.connect(host, port, database, user, password)
 
         self.task("run_migrations", "Run all migrations which have not run yet.", [devkit.sql.migrations.run_migrations])
         self.task("create_migration", "Create a new migration.", [devkit.sql.migrations.create_migration])

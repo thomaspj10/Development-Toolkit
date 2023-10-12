@@ -42,7 +42,7 @@ class SelectQueryBuilder:
         if self.__limit != None:
             limit_string = f" limit {self.__limit}"
 
-        return f"select rowid as id, * from `{self.__table_name}`{condition_string}{limit_string}".strip()
+        return f"select * from `{self.__table_name}`{condition_string}{limit_string}".strip()
     
     def get_table_type(self) -> Type[Any]:
         return self.__table_type
