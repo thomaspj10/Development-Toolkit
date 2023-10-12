@@ -13,22 +13,29 @@ class Task:
     name: str
     description: str
     functions: list[CALLABLE_TYPE]
+    is_database_required: bool
 
 class InfraDefinition:
     
-    tasks: list[Task]
+    _tasks: list[Task]
+    
+    _host: str
+    _port: int
+    _database: str
+    _user: str
+    _password: str
 
     def __init__(self) -> None:
-        self.tasks = []
+        self._tasks = []
 
-    def task(self, name: str, description: str, functions: list[CALLABLE_TYPE]):
+    def task(self, name: str, description: str, functions: list[CALLABLE_TYPE], is_database_required: bool = False):
         """
         Define a new task which can be dynamically invoked from the cli.
         """
-        self.tasks.append(Task(name, description, functions))
+        self._tasks.append(Task(name, description, functions, is_database_required))
 
 
-    def command(self, name: str, description: str, commands: list[str]):
+    def command(self, name: str, description: str, commands: list[str], is_database_required: bool = False):
         """
         Define a new task which will act as an alias for shell commands.
         """
@@ -36,20 +43,24 @@ class InfraDefinition:
             for command in commands:
                 os.system(command)
         
-        self.tasks.append(Task(name, description, [wrapper]))
+        self._tasks.append(Task(name, description, [wrapper], is_database_required))
 
     def use_database(self, host: str, port: int, database: str, user: str, password: str):
         """
-        Automatically connect to the database. Creates two tasks for the creation and running of migrations.
+        Automatically connect to the database. Creates two _tasks for the creation and running of migrations.
         """
-        sql.connect(host, port, database, user, password)
+        self._host = host
+        self._port = port
+        self._database = database
+        self._user = user
+        self._password = password
 
         self.task("run_migrations", "Run all migrations which have not run yet.", [devkit.sql.migrations.run_migrations])
         self.task("create_migration", "Create a new migration.", [devkit.sql.migrations.create_migration])
 
 def print_help(definition: InfraDefinition):
-    print("Available tasks:")
-    for index, task in enumerate(definition.tasks):
+    print("Available _tasks:")
+    for index, task in enumerate(definition._tasks):
         print(f"{index + 1}. {task.name.ljust(20)} - {task.description}")
 
 @contextmanager
@@ -69,11 +80,14 @@ def define(__name__: str):
         print_help(definition)
         return
     
-    if arguments[0] not in [item.name for item in definition.tasks]:
+    if arguments[0] not in [item.name for item in definition._tasks]:
         print_help(definition)
         return
     
-    task = [item for item in definition.tasks if item.name == arguments[0]][0]
+    task = [item for item in definition._tasks if item.name == arguments[0]][0]
+
+    if task.is_database_required:
+        sql.connect(definition._host, definition._port, definition._database, definition._user, definition._password)
 
     for func in task.functions:
         func()
